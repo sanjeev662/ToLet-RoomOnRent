@@ -687,7 +687,7 @@ const Signup = (props) => {
                     authorizationUrl="https://www.facebook.com/v12.0/dialog/oauth"
                     responseType="token"
                     clientId="303882562045636"
-                    redirectUri="http://localhost:3000/"
+                    redirectUri="https://to-let-room-on-rent.vercel.app/"
                     scope="public_profile"
                     onSuccess={handleFacebookResponse}
                   >
