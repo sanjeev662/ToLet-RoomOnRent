@@ -26,7 +26,7 @@ Router.post("/upload-by-link", async (req, res) => {
 });
 
 const photosMiddleware = multer({
-  dest: "/to-let-images",
+  // dest: "/to-let-images",
   limits: { fileSize: 1024 * 1024 * 10 },
 });
 
