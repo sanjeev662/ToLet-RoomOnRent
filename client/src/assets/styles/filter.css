@@ -1,0 +1,146 @@
+body {
+    /* background-color: #eee; */
+    background-color: #f9fafb;
+  }
+  
+  @media (max-width: 767.98px) {
+    .border-sm-start-none {
+      border-left: none !important;
+    }
+  }
+
+  /* styles.css */
+.outer-border {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    min-height: 65vh;
+  }
+  
+  @media (max-width: 800px) {
+    .outer-border {
+      border: none;
+    }
+  }
+    
+  
+  .header-header {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 24px;
+    gap: 10px;
+    width: 100%;
+    border-bottom: 1px solid #d1d5db;
+    border-radius: 0px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: #ffff;
+}
+
+.header-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px !important;
+    line-height: 150%;
+}
+
+.header-utilBar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    width: 100%;
+}
+
+@media (max-width: 768px)
+{
+.autocomplete-searchBar {
+    max-width: 100%;
+    min-width: 343px;
+    flex: 1 1 100%;
+    padding: 0 16px;
+}
+.header-divider {
+    position: relative;
+    min-width: 100%;
+    height: 1px;
+    background-color: #d1d5db;
+}
+}
+
+.autocomplete-search {
+    padding: 9px 4px 9px 42px !important;
+    background: transparent url(https://amber-widget-bucket.s3.eu-west-1.amazonaws.com/Icons-2/magnifying-glass.svg) no-repeat 16px center !important;
+    background-size: 18px 18px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    width: 100% !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 4px!important;
+    height: 36px !important;
+}
+
+.header-divider {
+    content: '';
+    width: 1px;
+    flex: none;
+    align-self: stretch;
+    flex-grow: 0;
+}
+.header-filters {
+    padding: 0 16px;
+}
+
+.header-filters{
+    display: flex;
+    gap: 16px;
+}
+
+.main-app *, .main-app > * ::before, .main-app > * ::after {
+    box-sizing: content-box;
+    line-height: 1em;
+    color: #111928;
+}
+
+.main-body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 12px;
+    width: 100%;
+    min-height: 150px;
+}
+
+.main-app {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0px 0px 24px;
+  gap: 16px;
+  min-width: 374px;
+  max-width: 1332px;
+  margin: 0 auto;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: Open Sauce One, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
+  box-sizing: content-box;
+}
+
+.listing--propertyCount
+{
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px 24px;
+  gap: 10px;
+}
+
+
+
+  

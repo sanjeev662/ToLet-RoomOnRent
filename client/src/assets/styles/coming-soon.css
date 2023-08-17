@@ -1,0 +1,35 @@
+.main-container {
+    background-image: url("../media/images/comingsoon-bg.png");
+    background-size: 100%;
+}
+
+.main-container {
+    padding: 50px;
+}
+
+.logo-sm {
+    width: 150px;
+}
+
+h1.page-heading {
+    background: -webkit-linear-gradient(94.82deg, #FBA33C 24.95%, #B092EE 65.01%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 50px;
+    background-clip: text;
+    margin-top: 20px;
+}
+
+.col .banner {
+    margin-top: 0px;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.hbspt-form {
+    height: 600px !important;
+    overflow: hidden;
+    margin-bottom: -75px;
+}

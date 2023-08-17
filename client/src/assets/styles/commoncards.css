@@ -1,0 +1,169 @@
+@import url(app.css);
+
+.card-cont {
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.common-cards-container {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.common-cards-container h2 {
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.common-cards-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.common-cards-container p {
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.common-cards-content a {
+  display: flex;
+  align-items: center;
+  color: var(--secondary-color);
+}
+
+.common-cards-content a svg {
+  font-size: 13px;
+  margin-left: 5px;
+}
+
+.common-cards-images {
+  display: flex;
+  justify-content: center;
+  gap: 1.8rem;
+}
+
+.common-cards-image {
+  width: 50%;
+  position: relative;
+  transition: all 0.3s linear;
+  border-radius: 8px;
+}
+
+.common-cards-image img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.common-cards-image span {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  font-weight: 400;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.hiringchallenges span {
+  left: 15px;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.common-cards-image span strong {
+  font-weight: 500;
+  font-size: 16px;
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.hiringchallenges-explore {
+  background: #f6f8fa;
+  position: relative;
+}
+
+.hiringchallenges-explore span {
+  color: #1c4980;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 140%;
+  z-index: 1;
+}
+
+.common-cards-image:nth-child(1) {
+  color: #61180c !important;
+}
+
+.common-cards-image:nth-child(2) {
+  color: #685200 !important;
+}
+
+.common-cards-image:nth-child(3) {
+  color: #1c4980 !important;
+}
+
+.common-cards-image:nth-child(4) {
+  color: #61180c !important;
+}
+
+.hiringchallenges:nth-child(1) {
+  color: #1c4980 !important;
+}
+
+.hiringchallenges:nth-child(2) {
+  color: #61111d !important;
+}
+
+.hiringchallenges:nth-child(3) {
+  color: #5a3904 !important;
+}
+
+
+@media (min-width: 1201px) {
+
+  .hiringchallenges-cards::after {
+    content: "";
+    background: url(../media/images/whiteshade.png) no-repeat;
+    position: absolute;
+    background-size: cover;
+    width: 80px;
+    height: 99px;
+    right: 30px;
+    bottom: 50%;
+    z-index: -1;
+  }
+}
+
+@media (max-width: 750px) {
+  .common-cards-images {
+    flex-wrap: wrap;
+  }
+
+  .common-cards-image {
+    width: 80%;
+  }
+
+  .common-cards-image span {
+    font-size: 18px;
+  }
+
+  .hiringchallenges span {
+    font-size: 20px;
+  }
+
+  .common-cards-image span strong {
+    font-size: 18px;
+    color: white;
+    background-color: var(--secondary-color);
+  }
+
+  .hiringchallenges-explore span {
+    font-size: 22px;
+  }
+}

@@ -1,0 +1,22 @@
+.circles {
+    /* Your marker styles here */
+    width: 15px;
+    height: 15px;
+    background-color: blue;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  
+  .circles.hover {
+    background-color: green;
+  }
+  
+  .circlesText {
+    color: white;
+    font-size: 14px;
+  }
