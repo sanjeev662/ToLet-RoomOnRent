@@ -17,7 +17,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/UserContext.jsx";
 import {url} from "../../utils/Constants";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://tolet-roomonrent-server.onrender.com";
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
