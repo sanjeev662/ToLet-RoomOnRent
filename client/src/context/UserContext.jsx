@@ -63,10 +63,16 @@ export function UserContextProvider({ children }) {
     }
   };
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const setDatas = async () => {
+    const userInfo = await JSON.parse(localStorage.getItem("userInfo"));
+    console.log(userInfo);
     setUser(userInfo);
     setLoggedUser(userInfo);
+    // history("/");
+  };
+
+  useEffect(() => {
+    setDatas();
   }, [history]);
 
   return (
