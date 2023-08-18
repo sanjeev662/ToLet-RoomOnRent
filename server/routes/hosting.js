@@ -25,9 +25,14 @@ Router.post("/upload-by-link", async (req, res) => {
   }
 });
 
+// const photosMiddleware = multer({
+//   // dest: "/to-let-images",
+//   limits: { fileSize: 1024 * 1024 * 10 },
+// });
+
 const photosMiddleware = multer({
-  // dest: "/to-let-images",
-  limits: { fileSize: 1024 * 1024 * 10 },
+  dest: path.join(__dirname, 'to-let-images'),
+  limits: { fileSize: 1024 * 1024 * 10 }, // 10MB file size limit
 });
 
 // Middleware for image upload using multer
