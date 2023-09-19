@@ -27,14 +27,7 @@ const Chatpage = () => {
   const navigate=useNavigate();
 
   useEffect(() => {
-    // if (!islogin) {
-    if (!(localStorage.getItem("userInfo"))) {
-      swal({
-        title: "Login Required!" ,
-        text: "Go to Login Page!",
-        icon: "error",
-        button: "Ok!",
-      });
+    if (!islogin) {
       navigate("/login");
     }
   }, []);
