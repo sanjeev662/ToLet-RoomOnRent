@@ -1,7 +1,7 @@
 # ToLet-RoomOnRent (Rental Property Platform Beta Version)
 
 ## Project Overview
-Developed a comprehensive rental property platform that simplifies the search and booking process for users and property owners.
+Our project simplifies property rentals by providing an intuitive platform with filter-based and map-based search, real-time chat for direct owner communication, and efficient booking and hosting features. **It eliminates the hassle of door-to-door room searches**, streamlining property discovery and rental decision-making
 
 ## Features
 
@@ -18,16 +18,13 @@ Developed a comprehensive rental property platform that simplifies the search an
 - Utilized Google Maps integration to provide precise room locations for users, allowing property owners to pinpoint their offerings.
 
 ### Filtering Options
-- Developed advanced filtering options, enabling users to refine their search results based on preferences such as room size, location, and price range.
+- Developed advanced filtering options, enabling users to refine their search results based on preferences such as room location and price range.
 
 ### Variety of Listings
 - Included a diverse range of rental listings, from cozy rooms to spacious flats and luxurious hotels, to cater to different user preferences.
 
 ### Direct Owner Interaction
 - Enabled users to connect directly with property owners, facilitating discussions about availability and terms, fostering trust and transparency.
-
-### Feature-Rich Platform
-- Designed a feature-rich platform that enhances the overall rental search experience, offering convenience and choice.
 
 ## Skills Demonstrated
 
