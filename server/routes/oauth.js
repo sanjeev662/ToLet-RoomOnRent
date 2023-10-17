@@ -103,8 +103,12 @@ Router.post(
 
     // To check wheather the user exists already with the given email
     let user = await User.findOne({ googleId: req.body.googleId });
-    if (!user) {
+    let email = await User.findOne({ googleId: req.body.email });
+    if (!user && !email) {
       return res.status(200).json({ success: false, requireSignup: true });
+    }
+    if (!user) {
+      return res.status(200).json({ success: false, requireSignup: false, message:"user already exist with same email try diffrent way of login." });
     }
 
     try {

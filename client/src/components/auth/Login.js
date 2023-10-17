@@ -107,7 +107,7 @@ const Login = (props) => {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({ googleId: userObject.sub }),
+        body: JSON.stringify({ googleId: userObject.sub , email: userObject.email}),
         mode: "cors",
         referrerPolicy: "origin-when-cross-origin",
       }
