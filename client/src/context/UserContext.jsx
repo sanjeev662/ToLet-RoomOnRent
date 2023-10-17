@@ -52,6 +52,8 @@ export function UserContextProvider({ children }) {
         setUsername(String(json.data.firstName + " " + json.data.lastName));
       } else {
         setIslogin(false);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userInfo");
       }
     } catch (err) {
       swal({
