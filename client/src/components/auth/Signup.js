@@ -5,6 +5,7 @@ import swal from "sweetalert";
 import TestimonialSlider from "../testimonial/TestimonialSlider";
 import { url } from "../../utils/Constants";
 import OAuth2Login from "react-simple-oauth2-login";
+import { UserContext } from "../../context/UserContext.jsx";
 
 const Signup = (props) => {
   const [credentials, setCredentials] = useState({
@@ -25,6 +26,8 @@ const Signup = (props) => {
 
   const [facebookId, setFacebookId] = useState(0);
   const [signUpFbReq, setSignUpFbReq] = useState(false);
+
+  const { setIslogin } = useContext(UserContext);
 
   ///////////////////////////////////////////google start/////////////////////////////////////////////////////////////////////
 
@@ -116,6 +119,12 @@ const Signup = (props) => {
     const json = await res.json();
 
     if (json.success === true) {
+      swal({
+        title: "Welcome!",
+        text: "Logged in Successfully",
+        icon: "success",
+        button: "Ok!",
+      });
       await localStorage.setItem("token", json.authToken);
       await localStorage.setItem("userInfo", JSON.stringify(json));
       setIslogin(true);
