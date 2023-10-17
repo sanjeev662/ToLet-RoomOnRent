@@ -114,6 +114,12 @@ const Login = (props) => {
 
 
       if (json.success === true) {
+        swal({
+          title: "Welcome!",
+          text: "Logged in Successfully",
+          icon: "success",
+          button: "Ok!",
+        });
         await localStorage.setItem("token", json.authToken);
         await localStorage.setItem("userInfo", JSON.stringify(json));
         setIslogin(true);
