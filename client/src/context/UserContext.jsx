@@ -50,7 +50,7 @@ export function UserContextProvider({ children }) {
         setIslogin(true);
         setUser(json);
         setUsername(String(json.data.firstName + " " + json.data.lastName));
-      } else if(json.success === true){
+      } else if(json.success === false){
         setIslogin(false);
         localStorage.removeItem("token");
         localStorage.removeItem("userInfo");
