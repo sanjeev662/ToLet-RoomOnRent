@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import swal from "sweetalert";
@@ -6,11 +6,10 @@ import TestimonialSlider from "../testimonial/TestimonialSlider";
 import { url } from "../../utils/Constants";
 import OAuth2Login from "react-simple-oauth2-login";
 
-import {UserContext} from "../../context/UserContext.jsx";
+import { UserContext } from "../../context/UserContext.jsx";
 
 const Login = (props) => {
-
-  const {setIslogin} = useContext(UserContext);
+  const { setIslogin } = useContext(UserContext);
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   let history = useNavigate();
@@ -25,7 +24,7 @@ const Login = (props) => {
     if (event.target.name === "phone") {
       const phoneValue = event.target.value.substring(0, 10);
       setCredentials({ ...credentials, [event.target.name]: phoneValue });
-    }  else {
+    } else {
       setCredentials({
         ...credentials,
         [event.target.name]: event.target.value,
@@ -38,22 +37,19 @@ const Login = (props) => {
 
     if (validateForm()) {
       try {
-        const response = await fetch(
-          `${url}/auth/signin`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-            mode: "cors",
-            referrerPolicy: "origin-when-cross-origin",
-          }
-        );
+        const response = await fetch(`${url}/auth/signin`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+          mode: "cors",
+          referrerPolicy: "origin-when-cross-origin",
+        });
         const json = await response.json();
 
         if (json.success === true) {
@@ -64,7 +60,7 @@ const Login = (props) => {
             button: "Ok!",
           });
           await localStorage.setItem("token", json.authToken);
-          await localStorage.setItem("userInfo",JSON.stringify(json));
+          await localStorage.setItem("userInfo", JSON.stringify(json));
           setIslogin(true);
           history("/");
         } else {
@@ -87,138 +83,142 @@ const Login = (props) => {
   };
 
   const handleCallbackResponse = async (response) => {
-    try{
-    // getting the jwt token and setting userObject as it response
-    // //console.log("JWT ID TOKEN: ", response.credential);
-    var userObject = await jwt_decode(response.credential);
+    try {
+      // getting the jwt token and setting userObject as it response
+      // //console.log("JWT ID TOKEN: ", response.credential);
+      var userObject = await jwt_decode(response.credential);
 
-    setCredentials({
-      email: userObject.email,
-      fname: userObject.given_name,
-      lname: userObject.family_name,
-    });
-    setGoogleID(userObject.sub);
+      setCredentials({
+        email: userObject.email,
+        fname: userObject.given_name,
+        lname: userObject.family_name,
+      });
+      setGoogleID(userObject.sub);
 
-    const res = await fetch(
-      `${url}/oauth/google/signin`,
-      {
+      const res = await fetch(`${url}/oauth/google/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({ googleId: userObject.sub , email: userObject.email}),
+        body: JSON.stringify({
+          googleId: userObject.sub,
+          email: userObject.email,
+        }),
         mode: "cors",
         referrerPolicy: "origin-when-cross-origin",
+      });
+
+      const json = await res.json();
+      // //console.log(json);
+
+      if (json.success === true) {
+        setIslogin(true);
+        history("/");
+      } else if (json.requireSignup === false && json.success === false) {
+        await localStorage.setItem("token", json.authToken);
+        await localStorage.setItem("userInfo", JSON.stringify(json));
+        swal({
+          title: "Try Again!",
+          text: "Try using diffrent way, user already exist!",
+          icon: "error",
+          button: "Ok!",
+        });
+      } else {
+        setSignUpReq(true);
       }
-    );
-
-    const json = await res.json();
-    // //console.log(json);
-
-    if (json.requireSignup === false) {
-      await localStorage.setItem("token", json.authToken);
-      await localStorage.setItem("userInfo",JSON.stringify(json));
-      setIslogin(true);
-      history("/");
-    } else {
-      setSignUpReq(true);
+    } catch (err) {
+      swal({
+        title: "Try Again!",
+        text: "server is down!",
+        icon: "error",
+        button: "Ok!",
+      });
     }
-  } catch (err) {
-    swal({
-      title: "Try Again!",
-      text: "server is down!",
-      icon: "error",
-      button: "Ok!",
-    });
-  }
   };
 
   const handleFacebookResponse = async (response) => {
     try {
-    const accessToken = response.access_token;
-    const result = await fetch(
-      `https://graph.facebook.com/v12.0/me?fields=id,name,email,picture.type(large)&access_token=${accessToken}`
-    );
-    const profile = await result.json();
+      const accessToken = response.access_token;
+      const result = await fetch(
+        `https://graph.facebook.com/v12.0/me?fields=id,name,email,picture.type(large)&access_token=${accessToken}`
+      );
+      const profile = await result.json();
 
-    const fullName = profile.name;
-    const [firstName, lastName] = fullName.split(" ");
+      const fullName = profile.name;
+      const [firstName, lastName] = fullName.split(" ");
 
-    setCredentials({
-      fname: firstName,
-      lname: lastName,
-      email: profile.email,
-    });
-    setFacebookId(profile.id);
+      setCredentials({
+        fname: firstName,
+        lname: lastName,
+        email: profile.email,
+      });
+      setFacebookId(profile.id);
 
-    const res = await fetch(`${url}/oauth/facebook/signin`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({ facebookId: profile.id }),
-      mode: "cors",
-      referrerPolicy: "origin-when-cross-origin",
-    });
+      const res = await fetch(`${url}/oauth/facebook/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ facebookId: profile.id }),
+        mode: "cors",
+        referrerPolicy: "origin-when-cross-origin",
+      });
 
-    const json = await res.json();
-    // //console.log(json);
+      const json = await res.json();
+      // //console.log(json);
 
-    if (json.requireSignup === false) {
+      if (json.requireSignup === false) {
+        swal({
+          title: "Welcome!",
+          text: "Logged in Successfully",
+          icon: "success",
+          button: "Ok!",
+        });
+        await localStorage.setItem("token", json.authToken);
+        await localStorage.setItem("userInfo", JSON.stringify(json));
+        setIslogin(true);
+        history("/");
+      } else {
+        swal({
+          title: "Verified!",
+          text: "Continue to Register",
+          icon: "success",
+          button: "Continue!",
+        });
+        setSignUpFbReq(true);
+        history("/login");
+      }
+    } catch (err) {
       swal({
-        title: "Welcome!",
-        text: "Logged in Successfully",
-        icon: "success",
+        title: "Try Again!",
+        text: "server is down!",
+        icon: "error",
         button: "Ok!",
       });
-      await localStorage.setItem("token", json.authToken);
-      await localStorage.setItem("userInfo",JSON.stringify(json));
-      setIslogin(true);
-      history("/");
-    } else {
-      swal({
-        title: "Verified!",
-        text: "Continue to Register",
-        icon: "success",
-        button: "Continue!",
-      });
-      setSignUpFbReq(true);
-      history("/login");
     }
-  } catch (err) {
-    swal({
-      title: "Try Again!",
-      text: "server is down!",
-      icon: "error",
-      button: "Ok!",
-    });
-  }
   };
 
   const handleGoogleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(
-        `${url}/oauth/google/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            fname: credentials.fname,
-            lname: credentials.lname,
-            phone: credentials.phone,
-            email: credentials.email,
-            googleId: googleID,
-          }),
-          mode: "cors",
-          referrerPolicy: "origin-when-cross-origin",
-        }
-      );
+      const response = await fetch(`${url}/oauth/google/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          fname: credentials.fname,
+          lname: credentials.lname,
+          phone: credentials.phone,
+          email: credentials.email,
+          googleId: googleID,
+        }),
+        mode: "cors",
+        referrerPolicy: "origin-when-cross-origin",
+      });
       const json = await response.json();
 
       if (json.success === true) {
@@ -229,7 +229,7 @@ const Login = (props) => {
           button: "Ok!",
         });
         await localStorage.setItem("token", json.authToken);
-        await localStorage.setItem("userInfo",JSON.stringify(json));
+        await localStorage.setItem("userInfo", JSON.stringify(json));
         setIslogin(true);
         history("/");
       } else {
@@ -250,56 +250,56 @@ const Login = (props) => {
     }
   };
 
-    //for Facebook submit
-    const handleFacebookSubmit = async (event) => {
-      event.preventDefault();
-      try {
-        const response = await fetch(`${url}/oauth/facebook/signup`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            fname: credentials.fname,
-            lname: credentials.lname,
-            phone: credentials.phone,
-            email: credentials.email,
-            facebookId: facebookId,
-          }),
-          mode: "cors",
-          referrerPolicy: "origin-when-cross-origin",
+  //for Facebook submit
+  const handleFacebookSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`${url}/oauth/facebook/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          fname: credentials.fname,
+          lname: credentials.lname,
+          phone: credentials.phone,
+          email: credentials.email,
+          facebookId: facebookId,
+        }),
+        mode: "cors",
+        referrerPolicy: "origin-when-cross-origin",
+      });
+      const json = await response.json();
+
+      if (json.success === true) {
+        swal({
+          title: "Success!",
+          text: "Account Created Successfully",
+          icon: "success",
+          button: "Ok!",
         });
-        const json = await response.json();
-  
-        if (json.success === true) {
-          swal({
-            title: "Success!",
-            text: "Account Created Successfully",
-            icon: "success",
-            button: "Ok!",
-          });
-          await localStorage.setItem("token", json.authToken);
-          await localStorage.setItem("userInfo",JSON.stringify(json));
-          setIslogin(true);
-          history("/");
-        } else {
-          swal({
-            title: "Try Again!",
-            text: "error",
-            icon: "error",
-            button: "Ok!",
-          });
-        }
-      } catch (err) {
+        await localStorage.setItem("token", json.authToken);
+        await localStorage.setItem("userInfo", JSON.stringify(json));
+        setIslogin(true);
+        history("/");
+      } else {
         swal({
           title: "Try Again!",
-          text: "server is down!",
+          text: "error",
           icon: "error",
           button: "Ok!",
         });
       }
-    };
+    } catch (err) {
+      swal({
+        title: "Try Again!",
+        text: "server is down!",
+        icon: "error",
+        button: "Ok!",
+      });
+    }
+  };
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -310,7 +310,7 @@ const Login = (props) => {
     const initGAuth = async () => {
       await google.accounts.id.initialize({
         client_id:
-        "732128756874-psijih5njkbsr2l62rlf303n9l0173pv.apps.googleusercontent.com",
+          "732128756874-psijih5njkbsr2l62rlf303n9l0173pv.apps.googleusercontent.com",
         callback: handleCallbackResponse,
       });
 
@@ -328,14 +328,16 @@ const Login = (props) => {
   }, []);
 
   //for password to show
-  
+
   useEffect(() => {
     const ShowPasswordToggle = document.querySelector("[type='password']");
     const togglePasswordButton = document.getElementById("toggle-password");
     const passwordInput = document.querySelector("[type='password']");
-    
-    ShowPasswordToggle.onclick = function() {
-      document.querySelector("[type='password']").classList.add("input-password");
+
+    ShowPasswordToggle.onclick = function () {
+      document
+        .querySelector("[type='password']")
+        .classList.add("input-password");
       document.getElementById("toggle-password").classList.remove("d-none");
       const passwordInput = document.querySelector("[type='password']");
       const togglePasswordButton = document.getElementById("toggle-password");
@@ -354,7 +356,7 @@ const Login = (props) => {
             "Warning: this will display your password on the screen."
         );
       }
-    }
+    };
   }, []);
 
   /////////////////////////// form validation/////////////////////////////
@@ -384,7 +386,7 @@ const Login = (props) => {
     return isValid;
   };
 
-   /////////////////////////// form validation ended here/////////////////////////////
+  /////////////////////////// form validation ended here/////////////////////////////
   /////////////////////////// form validation ended here/////////////////////////////
 
   return (
@@ -417,52 +419,45 @@ const Login = (props) => {
               <div className="form-group">
                 <div className="pt-3" />
                 <div className="form-button">
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                  >
+                  <button type="submit" className="btn btn-primary">
                     Create Account
                   </button>
                 </div>
               </div>
             </form>
-             ) : signUpFbReq === true ? (
-              <form onSubmit={handleFacebookSubmit}>
-                <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">
-                    Phone<span className="required">*</span>
-                  </label>
-                  <input
-                    type="Number"
-                    className="form-control"
-                    id="exampleInputPhone"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter phone number"
-                    value={credentials.phone}
-                    onChange={onChange}
-                    name="phone"
-                  />
-                  {errors.phone && (
-                    <span style={{ color: "red", fontSize: "small" }}>
-                      {errors.phone}
-                    </span>
-                  )}
+          ) : signUpFbReq === true ? (
+            <form onSubmit={handleFacebookSubmit}>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1">
+                  Phone<span className="required">*</span>
+                </label>
+                <input
+                  type="Number"
+                  className="form-control"
+                  id="exampleInputPhone"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter phone number"
+                  value={credentials.phone}
+                  onChange={onChange}
+                  name="phone"
+                />
+                {errors.phone && (
+                  <span style={{ color: "red", fontSize: "small" }}>
+                    {errors.phone}
+                  </span>
+                )}
+              </div>
+              <div className="form-group">
+                <div className="pt-3" />
+                <div className="form-button">
+                  <button type="submit" className="btn btn-primary">
+                    Create Account
+                  </button>
                 </div>
-                <div className="form-group">
-                  <div className="pt-3" />
-                  <div className="form-button">
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                    >
-                      Create Account
-                    </button>
-                  </div>
-                </div>
-              </form>
+              </div>
+            </form>
           ) : (
             <>
-              
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">
@@ -539,22 +534,22 @@ const Login = (props) => {
                   <i className="fa-brands fa-google fa-lg" />
                 </a>
                 <OAuth2Login
-                    className="social-icon"
-                    authorizationUrl="https://www.facebook.com/v12.0/dialog/oauth"
-                    responseType="token"
-                    clientId="303882562045636"
-                    redirectUri="https://to-let-room-on-rent.vercel.app/"
-                    scope="public_profile"
-                    onSuccess={handleFacebookResponse}
+                  className="social-icon"
+                  authorizationUrl="https://www.facebook.com/v12.0/dialog/oauth"
+                  responseType="token"
+                  clientId="303882562045636"
+                  redirectUri="https://to-let-room-on-rent.vercel.app/"
+                  scope="public_profile"
+                  onSuccess={handleFacebookResponse}
                 >
                   <i className="fa-brands fa-facebook fa-lg" />
                 </OAuth2Login>
               </div>
             </>
           )}
-              <div className="regular-text text-center">
-                Don't have an account? <Link to="/signup">Sign Up</Link>
-              </div>
+          <div className="regular-text text-center">
+            Don't have an account? <Link to="/signup">Sign Up</Link>
+          </div>
         </div>
       </section>
     </div>
