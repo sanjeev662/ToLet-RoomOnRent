@@ -115,10 +115,18 @@ const Signup = (props) => {
 
     const json = await res.json();
 
-    if (json.requireSignup === false) {
+    if (json.success === true) {
       await localStorage.setItem("token", json.authToken);
-      await localStorage.setItem("userInfo",JSON.stringify(json));
+      await localStorage.setItem("userInfo", JSON.stringify(json));
+      setIslogin(true);
       history("/");
+    } else if (json.requireSignup === false && json.success === false) {
+      swal({
+        title: "Try Again!",
+        text: "Try using diffrent way, user already exist!",
+        icon: "error",
+        button: "Ok!",
+      });
     } else {
       setSignUpReq(true);
       history("/signup");

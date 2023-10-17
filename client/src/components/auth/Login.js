@@ -113,11 +113,11 @@ const Login = (props) => {
       // //console.log(json);
 
       if (json.success === true) {
+        await localStorage.setItem("token", json.authToken);
+        await localStorage.setItem("userInfo", JSON.stringify(json));
         setIslogin(true);
         history("/");
       } else if (json.requireSignup === false && json.success === false) {
-        await localStorage.setItem("token", json.authToken);
-        await localStorage.setItem("userInfo", JSON.stringify(json));
         swal({
           title: "Try Again!",
           text: "Try using diffrent way, user already exist!",
