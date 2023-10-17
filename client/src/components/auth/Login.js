@@ -124,7 +124,6 @@ const Login = (props) => {
           icon: "error",
           button: "Ok!",
         });
-        history("/");
       } else {
         setSignUpReq(true);
       }
