@@ -8,7 +8,7 @@ import OAuth2Login from "react-simple-oauth2-login";
 import { UserContext } from "../../context/UserContext.jsx";
 
 const Signup = (props) => {
-  // const { setIslogin } = useContext(UserContext);
+  const { setIslogin } = useContext(UserContext);
 
   const [credentials, setCredentials] = useState({
     fname: "",
@@ -129,7 +129,7 @@ const Signup = (props) => {
       });
       await localStorage.setItem("token", json.authToken);
       await localStorage.setItem("userInfo", JSON.stringify(json));
-      // setIslogin(true);
+      setIslogin(true);
       history("/");
     } else if (json.requireSignup === false && json.success === false) {
       swal({
