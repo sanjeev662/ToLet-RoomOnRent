@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import swal from "sweetalert";
@@ -8,6 +8,8 @@ import OAuth2Login from "react-simple-oauth2-login";
 import { UserContext } from "../../context/UserContext.jsx";
 
 const Signup = (props) => {
+  const { setIslogin } = useContext(UserContext);
+
   const [credentials, setCredentials] = useState({
     fname: "",
     lname: "",
@@ -27,7 +29,7 @@ const Signup = (props) => {
   const [facebookId, setFacebookId] = useState(0);
   const [signUpFbReq, setSignUpFbReq] = useState(false);
 
-  const { setIslogin } = useContext(UserContext);
+
 
   ///////////////////////////////////////////google start/////////////////////////////////////////////////////////////////////
 
