@@ -9,27 +9,7 @@ const fetchUser = require("../middleware/fetchUserFromToken");
 
 const Router = express.Router();
 
-Router.post("/upload-by-link", async (req, res) => {
-  try {
-    const { link } = req.body;
-    const newName = "photo" + Date.now();
-    const result = await cloudinary.uploader.upload(link, {
-      public_id: newName,
-      resource_type: "image",
-      folder: "to-let-images",
-    });
-
-    res.json(result.secure_url);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to upload image." });
-  }
-});
-
-// const photosMiddleware = multer({
-//   // dest: "/to-let-images",
-//   limits: { fileSize: 1024 * 1024 * 10 },
-// });
-
+// Multer configuration for image uploads
 const photosMiddleware = multer({
   dest: path.join(__dirname, 'to-let-images'),
   limits: { fileSize: 1024 * 1024 * 10 }, // 10MB file size limit

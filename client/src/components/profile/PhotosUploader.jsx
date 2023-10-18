@@ -7,25 +7,6 @@ import swal from "sweetalert";
 export default function PhotosUploader({addedPhotos,onChange}) {
   const [photoLink,setPhotoLink] = useState('');
 
-  async function addPhotoByLink(ev) {
-    try{
-    ev.preventDefault();
-    const {data:filename} = await axios.post(`${url}/hosting/upload-by-link`, {link: photoLink});
-    onChange(prev => {
-      return [...prev, filename];
-    });
-    setPhotoLink('');
-  } catch (err) {
-    swal({
-      title: "Try Again!",
-      text: "server is down!",
-      icon: "error",
-      button: "Ok!",
-    });
-  }
-  }
-
-
   function uploadPhoto(ev) {
     try{
     const files = ev.target.files;
@@ -60,12 +41,6 @@ export default function PhotosUploader({addedPhotos,onChange}) {
   }
   return (
     <>
-      <div className="flex gap-2">
-        <input value={photoLink}
-               onChange={ev => setPhotoLink(ev.target.value)}
-               type="text" placeholder={'Add using a link ....jpg'}/>
-        <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">Add&nbsp;photo</button>
-      </div>
       <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {addedPhotos.length > 0 && addedPhotos.map(link => (
           <div className="h-32 flex relative" key={link}>
