@@ -102,7 +102,7 @@ const ForgotPass = (props) => {
         } else {
           swal({
             title: "Try Again!",
-            text: "error",
+            text: "Invalid OTP!",
             icon: "error",
             button: "Ok!",
           });
