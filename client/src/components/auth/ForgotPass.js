@@ -164,35 +164,19 @@ const ForgotPass = (props) => {
   /////////////////////////// form validation ended here/////////////////////////////
   /////////////////////////// form validation ended here/////////////////////////////
 
-  //for toggle button to show password tried but failed null error
+  ///////////////////////////for show password toggle_button start//////////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   const ShowPasswordToggle = document.querySelector("[type='password']");
-  //   const togglePasswordButton = document.getElementById("toggle-password");
-  //   const passwordInput = document.querySelector("[type='password']");
+  const [showPassword, setShowPassword] = useState(false);
 
-  //   ShowPasswordToggle.onclick = function() {
-  //     document.querySelector("[type='password']").classList.add("input-password");
-  //     document.getElementById("toggle-password").classList.remove("d-none");
-  //     const passwordInput = document.querySelector("[type='password']");
-  //     const togglePasswordButton = document.getElementById("toggle-password");
-  //     togglePasswordButton.addEventListener("click", togglePassword);
-  //   };
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-  //   const togglePassword = () => {
-  //     if (passwordInput.type === "password") {
-  //       passwordInput.type = "text";
-  //       togglePasswordButton.setAttribute("aria-label", "Hide password.");
-  //     } else {
-  //       passwordInput.type = "password";
-  //       togglePasswordButton.setAttribute(
-  //         "aria-label",
-  //         "Show password as plain text. " +
-  //           "Warning: this will display your password on the screen."
-  //       );
-  //     }
-  //   }
-  // }, []);
+  const handleShowPassword = () => {
+    return showPassword ? "text" : "password";
+  };
+
+  ///////////////////////////for show password toggle_button start//////////////////////////////////////////////////////////////
 
   return (
     <div className="container-fluid d-flex px-0 section">
@@ -268,7 +252,7 @@ const ForgotPass = (props) => {
                 )}
               </div>
 
-              <label htmlFor="exampleInputPassword1">
+              {/* <label htmlFor="exampleInputPassword1">
                 Set New Password<span className="required">*</span>
               </label>
               <input
@@ -292,7 +276,49 @@ const ForgotPass = (props) => {
                 type="button"
                 className="d-none"
                 aria-label="Show password as plain text. Warning: this will display your password on the screen."
-              />
+              /> */}
+
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1">
+                  Set New Password<span className="required">*</span>
+                </label>
+                <div style={{ position: "relative" }}>
+                  <input
+                    type={handleShowPassword()}
+                    className="form-control"
+                    id="exampleInputPassword"
+                    required
+                    minLength={8}
+                    placeholder="Password"
+                    value={credentials.password}
+                    onChange={onChange}
+                    name="password"
+                  />
+                  <i
+                    className="password-icon"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "0.75rem",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                    }}
+                    onClick={togglePassword}
+                  >
+                    {showPassword ? (
+                      <i className="fa-solid fa-eye-slash" />
+                    ) : (
+                      <i className="fa-solid fa-eye" />
+                    )}
+                  </i>
+                </div>
+                {errors.password && (
+                  <span style={{ color: "red", fontSize: "small" }}>
+                    {errors.password}
+                  </span>
+                )}
+              </div>
+
               <div className="pt-3" />
               <div className="form-button">
                 <button type="submit" className="btn btn-primary">

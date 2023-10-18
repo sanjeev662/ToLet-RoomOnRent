@@ -62,35 +62,15 @@ const Signup = (props) => {
 
   ///////////////////////////for show password toggle_button start//////////////////////////////////////////////////////////////
 
-  useEffect(() => {
-    const ShowPasswordToggle = document.querySelector("[type='password']");
-    const togglePasswordButton = document.getElementById("toggle-password");
-    const passwordInput = document.querySelector("[type='password']");
+  const [showPassword, setShowPassword] = useState(false);
 
-    ShowPasswordToggle.onclick = function () {
-      document
-        .querySelector("[type='password']")
-        .classList.add("input-password");
-      document.getElementById("toggle-password").classList.remove("d-none");
-      const passwordInput = document.querySelector("[type='password']");
-      const togglePasswordButton = document.getElementById("toggle-password");
-      togglePasswordButton.addEventListener("click", togglePassword);
-    };
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
 
-    const togglePassword = () => {
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        togglePasswordButton.setAttribute("aria-label", "Hide password.");
-      } else {
-        passwordInput.type = "password";
-        togglePasswordButton.setAttribute(
-          "aria-label",
-          "Show password as plain text. " +
-            "Warning: this will display your password on the screen."
-        );
-      }
-    };
-  }, []);
+  const handleShowPassword = () => {
+    return showPassword ? "text" : "password";
+  };
 
   ///////////////////////////for show password toggle_button start//////////////////////////////////////////////////////////////
 
@@ -666,26 +646,39 @@ const Signup = (props) => {
                     <label htmlFor="exampleInputPassword1">
                       Password<span className="required">*</span>
                     </label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="exampleInputPassword"
-                      placeholder="Password"
-                      value={credentials.password}
-                      onChange={onChange}
-                      name="password"
-                    />
+                    <div style={{ position: "relative" }}>
+                      <input
+                        type={handleShowPassword()}
+                        className="form-control"
+                        id="exampleInputPassword1"
+                        placeholder="Password"
+                        value={credentials.password}
+                        onChange={onChange}
+                        name="password"
+                      />
+                      <i
+                        className="password-icon"
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          right: "0.75rem",
+                          transform: "translateY(-50%)",
+                          cursor: "pointer",
+                        }}
+                        onClick={togglePassword}
+                      >
+                        {showPassword ? (
+                          <i className="fa-solid fa-eye-slash" />
+                        ) : (
+                          <i className="fa-solid fa-eye" />
+                        )}
+                      </i>
+                    </div>
                     {errors.password && (
                       <span style={{ color: "red", fontSize: "small" }}>
                         {errors.password}
                       </span>
                     )}
-                    <button
-                      id="toggle-password"
-                      type="button"
-                      className="d-none"
-                      aria-label="Show password as plain text. Warning: this will display your password on the screen."
-                    />
                   </div>
                 </div>
                 <div className="pt-3" />
