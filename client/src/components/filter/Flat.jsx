@@ -353,7 +353,7 @@ function Flat() {
                           <span>Date Posted</span>
                           <span className="text-primary"> : </span>
                           <span>
-                            {room.datecreated
+                            {flat.datecreated
                               ? flat.datecreated.split("T")[0]
                               : null}
                           </span>
