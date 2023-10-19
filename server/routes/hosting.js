@@ -12,7 +12,9 @@ const Router = express.Router();
 
 // Multer configuration for image uploads
 const photosMiddleware = multer({
-   dest: "/to-let-images",
+  //  dest: "/to-let-images",
+  // limits: { fileSize: 1024 * 1024 * 10 },
+  dest: path.join(__dirname, 'to-let-images'),
   limits: { fileSize: 1024 * 1024 * 10 },
 });
 
