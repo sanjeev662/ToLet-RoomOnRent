@@ -1,4 +1,5 @@
 const express = require("express");
+const moment = require("moment-timezone");
 const multer = require("multer");
 const User = require("../models/User.js");
 const Place = require("../models/Place.js");
@@ -11,8 +12,8 @@ const Router = express.Router();
 
 // Multer configuration for image uploads
 const photosMiddleware = multer({
-  dest: path.join(__dirname, 'to-let-images'),
-  limits: { fileSize: 1024 * 1024 * 10 }, // 10MB file size limit
+   dest: "/to-let-images",
+  limits: { fileSize: 1024 * 1024 * 10 },
 });
 
 // Middleware for image upload using multer
@@ -61,6 +62,8 @@ Router.post("/upload", fetchUser, async (req, res) => {
       longitude,
     } = req.body;
 
+    const datecreated = moment.tz(new Date(), 'Asia/Kolkata').format("YYYY-MM-DD hh:mm:ss");
+    
     const place = new Place({
       title,
       address,
@@ -75,6 +78,7 @@ Router.post("/upload", fetchUser, async (req, res) => {
       maxGuests,
       latitude,
       longitude,
+      datecreated,
       owner: user._id,
       ownername: user.firstName,
     });

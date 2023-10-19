@@ -18,6 +18,7 @@ const placeSchema = new mongoose.Schema({
   isbooked: {type:Boolean,default:false},
   latitude:{type: Number,default:25.4500},
   longitude:{type: Number,default:81.8400},
+  datecreated:Date
 });
 
 const Place = mongoose.model('Place', placeSchema);

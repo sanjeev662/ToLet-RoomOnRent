@@ -252,32 +252,6 @@ const ForgotPass = (props) => {
                 )}
               </div>
 
-              {/* <label htmlFor="exampleInputPassword1">
-                Set New Password<span className="required">*</span>
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="exampleInputPassword"
-                required
-                minLength={8}
-                placeholder="Password"
-                value={credentials.password}
-                onChange={onChange}
-                name="password"
-              />
-              {errors.password && (
-                <span style={{ color: "red", fontSize: "small" }}>
-                  {errors.password}
-                </span>
-              )}
-              <button
-                id="toggle-password"
-                type="button"
-                className="d-none"
-                aria-label="Show password as plain text. Warning: this will display your password on the screen."
-              /> */}
-
               <div className="form-group">
                 <label htmlFor="exampleInputPassword1">
                   Set New Password<span className="required">*</span>

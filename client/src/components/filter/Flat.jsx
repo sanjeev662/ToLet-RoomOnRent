@@ -8,6 +8,7 @@ import swal from "sweetalert";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function Flat() {
+  const [sort, setSort] = useState("new");
   const [flats, setFlats] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
@@ -87,7 +88,7 @@ function Flat() {
   //for pagination only ended
 
   const getData = async () => {
-    const req = `${url}/places?page=${currentPage}&size=${pageSize}&address=${filterData.address}&placetype=flat`;
+    const req = `${url}/places?page=${currentPage}&size=${pageSize}&address=${filterData.address}&sort=${sort}&placetype=flat`;
     setIsLoading(true);
     try {
       const response = await fetch(req, {
@@ -123,7 +124,7 @@ function Flat() {
 
   useEffect(() => {
     getData();
-  }, [currentPage, pageSize, filterDatas]);
+  }, [currentPage, pageSize, filterDatas, sort]);
 
   const addtosaved = async (id) => {
     if (!islogin) {
@@ -199,58 +200,47 @@ function Flat() {
                       ))}
                     </datalist>
                   </div>
-                  <div className="header-divider"></div>
+                  {/* <div className="header-divider"></div> */}
 
                   <div className="header-filters">
-                    {/* <div className="d-flex justify-content-end">
-                      <select
-                        name="sort"
-                        // value={filter.sort}
-                        className="sortBy-filterButton p-1"
-                        // onChange={onChange}
-                      >
-                        <option value="">Sort By</option>
-                        <option value="Increasing-Price">Increasing Price</option>
-                        <option value="Decreasing-Price">Decreasing Price</option>
-                        <option value="Increasing Rating">Increasing Rating</option>
-                        <option value="Decreasing-Rating">Decreasing Rating</option>
-                      </select>
-                      <select
-                        name="price"
-                        // value={filter.price}
-                        className="sortBy-filterButton p-1 ml-2"
-                        // onChange={onChange}
-                      >
-                        <option value="">Price Range</option>
-                        <option value="100-500">100rs-500rs</option>
-                        <option value="501-1000">500rs-1000rs</option>
-                      </select>
-                      <select
-                        name="stay-duration"
-                        // value={filter.stay-duration}
-                        className="sortBy-filterButton p-1 ml-2"
-                        // onChange={onChange}
-                      >
-                        <option value="">Stay Duration</option>
-                        <option value="1-15">1days-15days</option>
-                        <option value="15-30">15days-30days</option>
-                      </select>
-                    </div> */}
+
+                  <button
+                      name="submit"
+                      className="bg-primary text-white px-4 py-2 rounded ml-0"
+                    >
+                      Search
+                    </button>
+
                     <div className="d-flex justify-content-end">
-                      <a
-                        href="#"
+                      {/* <h4 className="m-auto">SortBy:</h4> */}
+                      <select
+                        className="form-select ml-1"
+                        aria-label="Default select example"
+                        onChange={(e) => setSort(e.target.value)}
+                        style={{ backgroundColor: "#0073e6", color: "white" }}
+                      >
+                        <option value="incprice">Price Increasing Order</option>
+                        <option value="decprice">Price Decreasing Order</option>
+                        <option value="new">Date Posted New First</option>
+                        <option value="old">Date Posted Old first</option>
+                      </select>
+                    </div>
+                    <div className="d-flex justify-content-end">
+                      <button
                         onClick={handleReset}
                         className="bg-primary text-white px-4 py-2 rounded"
                       >
                         Reset All
-                      </a>
-                      <button
+                      </button>
+                      {/* <button
                         name="submit"
-                        className="bg-primary text-white px-4 py-1 rounded ml-2"
+                        className="bg-primary text-white px-4 py-2 rounded ml-2"
                       >
                         Filter
-                      </button>
+                      </button> */}
                     </div>
+
+
                   </div>
                 </div>
               </div>
@@ -345,7 +335,7 @@ function Flat() {
                           </div>
                           <span>310</span>
                         </div>
-                        <div className="mt-1 mb-0 text-muted small">
+                        <div className="mt-1 text-muted small">
                           <span>
                             {flat.perks &&
                               flat.perks.length > 0 &&
@@ -353,10 +343,20 @@ function Flat() {
                           </span>
                           <br />
                         </div>
-                        <div className="mb-2 text-muted small">
+                        <div className="text-muted small">
                           <span>Owner</span>
                           <span className="text-primary"> : </span>
                           <span>{flat.ownername}</span>
+                          <br />
+                        </div>
+                        <div className="mb-1 text-muted small">
+                          <span>Date Posted</span>
+                          <span className="text-primary"> : </span>
+                          <span>
+                            {room.datecreated
+                              ? flat.datecreated.split("T")[0]
+                              : null}
+                          </span>
                           <br />
                         </div>
                         <p className="text-truncate mb-4 mb-md-0">

@@ -7,7 +7,7 @@ const Router = express.Router();
 Router.get("/", async (req, res) => {
   const page = req.query.page || 1;
   const ITEM_PER_PAGE = req.query.size || 6;
-  const { address, placetype } = req.query;
+  const { address, placetype, sort } = req.query;
 
   try {
     const skip = (page - 1) * ITEM_PER_PAGE;
@@ -17,8 +17,16 @@ Router.get("/", async (req, res) => {
       ...(placetype && { placetype: { $regex: placetype, $options: "i" } })
     };
 
+    let sortOptions = {};
+
+    if (sort === "new" || sort === "old") {
+      sortOptions.datecreated = sort === "new" ? -1 : 1;
+    } else {
+      sortOptions.price = sort === "decprice" ? -1 : 1;
+    }
+
     const count = await Place.countDocuments(query);
-    const placesdata = await Place.find(query).sort({ createdAt: -1 }).limit(ITEM_PER_PAGE).skip(skip);
+    const placesdata = await Place.find(query).sort(sortOptions).limit(ITEM_PER_PAGE).skip(skip);
 
     const pageCount = Math.ceil(count / ITEM_PER_PAGE);
 

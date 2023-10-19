@@ -1,5 +1,6 @@
 const express = require("express");
 const Router = express.Router();
+const moment = require("moment-timezone");
 const User = require("../models/User.js");
 const Booking = require("../models/Booking.js");
 const Place = require("../models/Place.js");
@@ -37,6 +38,8 @@ Router.post("/bookings", fetchUser, async (req, res) => {
 
     await Place.updateOne({ _id: placeDoc._id }, { $set: { isbooked: true } });
 
+    const datecreated = moment.tz(new Date(), 'Asia/Kolkata').format("YYYY-MM-DD hh:mm:ss");
+
     const bookingDoc = await Booking.create({
       place,
       checkIn,
@@ -45,6 +48,7 @@ Router.post("/bookings", fetchUser, async (req, res) => {
       name,
       phone,
       price,
+      datecreated,
       owner: placeowner,
       user: userId,
     });
