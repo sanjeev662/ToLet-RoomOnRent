@@ -366,6 +366,7 @@ function Hotel() {
                           <span className="text-danger">
                             <s>₹{hotel.price + 20}</s>
                           </span>
+                          <h4 className="ml-2">per night</h4>
                         </div>
                         <h6 className="text-success">{hotel.address}</h6>
                         <div className="d-flex flex-column mt-4">

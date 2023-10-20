@@ -74,7 +74,8 @@ export default function Map() {
               language: "en",
               region: "IN",
             }}
-            defaultCenter={{ lat: 28.2, lng: 76.6 }}
+            // defaultCenter={{ lat: 28.2, lng: 76.6 }}
+            defaultCenter={{ lat: 26.397, lng: 80.644 }}
             defaultZoom={8}
             distanceToMouse={distanceToMouse}
             onClick={handleMapClick}

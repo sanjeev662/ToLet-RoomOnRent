@@ -365,10 +365,11 @@ function Flat() {
                       </div>
                       <div className="col-md-6 col-lg-3 border-sm-start-none border-start">
                         <div className="d-flex flex-row align-items-center mb-1">
-                          <h4 className="me-1">₹{flat.price}</h4>
+                          <h4 className="me-1">₹{flat.price*30}</h4>
                           <span className="text-danger">
-                            <s>₹{flat.price + 20}</s>
+                            <s>₹{flat.price*30 + 120}</s>
                           </span>
+                          <h4 className="ml-2">per month</h4>
                         </div>
                         <h6 className="text-success">{flat.address}</h6>
                         <div className="d-flex flex-column mt-4">

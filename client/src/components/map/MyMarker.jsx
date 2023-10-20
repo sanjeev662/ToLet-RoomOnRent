@@ -1,36 +1,3 @@
-// import React, { useState } from "react";
-
-// const MyMarker = ({ text, tooltip, $hover,price,placetype }) => {
-//   const [showInfo, setShowInfo] = useState(false);
-
-//   const handleClick = () => {
-//     setShowInfo(!showInfo);
-//   };
-
-//   const handleClose = () => {
-//     setShowInfo(false);
-//   };
-
-//   return (
-//     <div className={showInfo ? "circles hover" : "circles"} onClick={handleClick}>
-//       <span className="circlesText" title={tooltip}></span>
-//       {showInfo && (
-//         <div className="infoTab">
-//           <div className="card">
-//                   <label>Place</label>
-//                   <h4 className="place">{tooltip}</h4>
-//                   <label>Type</label>
-//                   <p className="desc">{placetype}</p>
-//                   <lable>Price</lable>
-//                   <span className="date">RS. {price}</span>
-//                   <button onClick={handleClose}>Close</button>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
 // export default MyMarker;
 
 import React, { useState } from "react";
@@ -80,7 +47,8 @@ const MyMarker = ({ text, tooltip, $hover, price, placetype, isbooked }) => {
                 Type: {placetype}
               </p>
               <p className="card-text" style={{ margin: "3px 0px 5px 0px" }}>
-                Price: {price}
+                Price:{placetype === "Hotel" ? price : price * 30}&nbsp;
+                {placetype === "Hotel" ? "per night" : "per month"};
               </p>
               {/* <Link to={`/detail/${text}`} className="btn btn-primary" style={{padding:"2px"}}>
               View Details

@@ -65,10 +65,13 @@ function FeaturedCards({ images ,type}) {
                         <h5>{data.address}</h5>
                         {/* <h5>{data.price}</h5> */}
                         <div className="d-flex flex-row align-items-center mb-1">
-                          <h4 className="me-1">₹{data.price}</h4>
+                          <h4 className="me-1">₹{type === 'Hotel' ? data.price : data.price * 30}</h4>
                           <span className="text-danger">
-                            <s>₹{data.price + 20}</s>
+                            <s>₹{type === 'Hotel' ? data.price+30 : data.price * 30+60}</s>
                           </span>
+                          {/* <h4>&nbsp{type === 'Hotel' ? "per night" : "per month"}</h4> */}
+                          <h4>&nbsp;{type === 'Hotel' ? "per night" : "per month"}</h4>;
+
                         </div>
                         {/* <div className="featureopp-card-bottom">
                           <div className="card-badge">
