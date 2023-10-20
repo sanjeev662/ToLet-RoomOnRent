@@ -39,7 +39,7 @@ const MyMarker = ({ text, tooltip, $hover, price, placetype, isbooked }) => {
               ></button>
             </div>
             <div className="card-body" style={{ padding: "8px" }}>
-              <h3 className="card-title" style={{ fontSize: "20px" }}>
+              <h3 className="card-title text-truncate" style={{ fontSize: "20px" }}>
                 {tooltip}
               </h3>
               <hr style={{ margin: "8px 0" }} />
