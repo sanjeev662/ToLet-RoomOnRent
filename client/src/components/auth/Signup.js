@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import swal from "sweetalert";
 import TestimonialSlider from "../testimonial/TestimonialSlider";
 import { url } from "../../utils/Constants";
@@ -79,7 +79,7 @@ const Signup = (props) => {
   const handleCallbackResponse = async (response) => {
     // getting the jwt token and setting userObject as it response
     // //console.log("JWT ID TOKEN: ", response.credential);
-    var userObject = await jwt_decode(response.credential);
+    var userObject = await jwtDecode(response.credential);
     setCredentials({
       email: userObject.email,
       fname: userObject.given_name,

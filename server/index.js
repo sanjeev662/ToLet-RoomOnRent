@@ -3,7 +3,7 @@ const connectToMongo = require("./db");
 const cloudinary = require("cloudinary").v2;
 const cors = require("cors");
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 // Middleware
 app.use(express.static('public'));
