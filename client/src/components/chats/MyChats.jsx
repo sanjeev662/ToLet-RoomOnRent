@@ -16,8 +16,7 @@ import { Input } from "@chakra-ui/input";
 import UserListItem from "./userAvatar/UserListItem";
 import { Spinner } from "@chakra-ui/spinner";
 import ProfileModal from "./miscellaneous/ProfileModal";
-import NotificationBadge from "react-notification-badge";
-import { Effect } from "react-notification-badge";
+import { Badge } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
 import {
@@ -202,12 +201,25 @@ const MyChats = ({ fetchAgain }) => {
         </Tooltip>
 
         <Menu>
-            <MenuButton p={1}>
-              <NotificationBadge
-                count={notification.length}
-                effect={Effect.SCALE}
-              />
+            <MenuButton p={1} position="relative">
               <BellIcon fontSize="2xl" m={1} />
+              {notification.length > 0 && (
+                <Badge
+                  colorScheme="red"
+                  borderRadius="full"
+                  position="absolute"
+                  top="-1"
+                  right="-1"
+                  fontSize="0.8em"
+                  minW="6"
+                  h="6"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {notification.length}
+                </Badge>
+              )}
             </MenuButton>
             <MenuList p={1} fontSize="2xl">
               {!notification.length && "No New Messages"}
