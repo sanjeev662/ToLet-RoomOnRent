@@ -69,11 +69,12 @@ export default function Map() {
       {points.length ? (
         <div className="Map" style={{ width: "100vw", height: "80vh" }}>
           <GoogleMapReact
-            bootstrapURLKeys={{
-              key: "AIzaSyDuyLoUeeoFQDDqEA1AXMB5IvfrrVE5Dz4",
-              language: "en",
-              region: "IN",
-            }}
+            // bootstrapURLKeys={{
+            //       key: "AIzaSyDuyLoUeeoFQDDqEA1AXMB5IvfrrVE5Dz4",
+            //       language: "en",
+            //       region: "IN",
+            // }}
+            bootstrapURLKeys={{ key: '' }}
             // defaultCenter={{ lat: 28.2, lng: 76.6 }}
             defaultCenter={{ lat: 26.397, lng: 80.644 }}
             defaultZoom={8}
