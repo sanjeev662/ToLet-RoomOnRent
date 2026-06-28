@@ -19,18 +19,14 @@ export default function Bookedhosting() {
 
   const getbookedHostings = async () => {
     try {
-      axios
-        .get(`${url}/hosting/bookedhosting`, {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            token: authToken,
-          },
-        })
-        .then((response) => {
-          setBookings(response.data);
-          setIsLoading(false);
-        });
+      const response = await axios.get(`${url}/hosting/bookedhosting`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          token: authToken,
+        },
+      });
+      setBookings(response.data);
     } catch (err) {
       swal({
         title: "Try Again!",
@@ -38,6 +34,8 @@ export default function Bookedhosting() {
         icon: "error",
         button: "Ok!",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,7 +59,7 @@ export default function Bookedhosting() {
           button: "Ok!",
         });
       } else {
-        window.alert("Bookedhosting deleted successfully!");
+        swal({ title: "Success!", text: "Booking cancelled successfully!", icon: "success", button: "Ok!" });
         getbookedHostings();
       }
     } catch (error) {
@@ -204,9 +202,9 @@ export default function Bookedhosting() {
                   </div>
                   <div className="col-md-6 col-lg-3 border-sm-start-none border-start">
                     <div className="d-flex flex-row align-items-center mb-1">
-                      <h4 className="me-1">${booking.price}</h4>
+                      <h4 className="me-1">₹{booking.price}</h4>
                       <span className="text-danger">
-                        <s>$20.99</s>
+                        <s>₹20.99</s>
                       </span>
                     </div>
                     <h6 className="text-success">{booking.place.address}</h6>

@@ -7,6 +7,7 @@ import axios from "axios";
 import GoogleMapReact from "google-map-react";
 import MyMarker from "./MyMarker";
 import { url } from "../../utils/Constants";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const distanceToMouse = (pt, mp) => {
   if (pt && mp) {
@@ -16,6 +17,7 @@ const distanceToMouse = (pt, mp) => {
 
 export default function Map() {
   const [points, setPoints] = useState([]);
+  const [isMapLoading, setIsMapLoading] = useState(true);
   const { latitude, setLatitude, longitude, setLongitude } = useContext(UserContext);
   const navigate = useNavigate();
   const [lastClickTime, setLastClickTime] = useState(0);
@@ -25,8 +27,10 @@ export default function Map() {
       try {
         const response = await axios.get(`${url}/places/allplaces`);
         setPoints(response.data);
+        setIsMapLoading(false);
       } catch (error) {
         console.error(error);
+        setIsMapLoading(false);
       }
     };
     getPoints();
@@ -66,7 +70,11 @@ export default function Map() {
 
   return (
     <>
-      {points.length ? (
+      {isMapLoading ? (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "80vh" }}>
+          <CircularProgress />
+        </div>
+      ) : points.length ? (
         <div className="Map" style={{ width: "100vw", height: "80vh" }}>
           <GoogleMapReact
             // bootstrapURLKeys={{
@@ -74,7 +82,7 @@ export default function Map() {
             //       language: "en",
             //       region: "IN",
             // }}
-            bootstrapURLKeys={{ key: '' }}
+            bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_KEY || '', language: "en", region: "IN" }}
             // defaultCenter={{ lat: 28.2, lng: 76.6 }}
             defaultCenter={{ lat: 26.397, lng: 80.644 }}
             defaultZoom={8}

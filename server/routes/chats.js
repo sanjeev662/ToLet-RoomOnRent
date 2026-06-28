@@ -29,12 +29,9 @@ Router.post(
   "/",fetchUser,
   asyncHandler(async (req, res) => {
     const { guestuserId } = req.body;
-    console.log("check1");
     if (!guestuserId) {
-      console.log("UserId param not sent with request");
       return res.sendStatus(400);
     }
-    console.log("check2");
 
     var isChat = await Chat.find({
       isGroupChat: false,
@@ -45,9 +42,7 @@ Router.post(
     })
       .populate("users", "-password")
       .populate("latestMessage");
-      console.log("check3");
 
-      
     isChat = await User.populate(isChat, {
       path: "latestMessage.sender",
       select: "username pic email",
@@ -83,18 +78,17 @@ Router.get(
   "/",fetchUser,
   asyncHandler(async (req, res) => {
     try {
-      Chat.find({ users: { $elemMatch: { $eq: req.userId } } })
+      let results = await Chat.find({ users: { $elemMatch: { $eq: req.userId } } })
         .populate("users", "-password")
         .populate("groupAdmin", "-password")
         .populate("latestMessage")
-        .sort({ updatedAt: -1 })
-        .then(async (results) => {
-          results = await User.populate(results, {
-            path: "latestMessage.sender",
-            select: "username pic email",
-          });
-          res.status(200).send(results);
-        });
+        .sort({ updatedAt: -1 });
+
+      results = await User.populate(results, {
+        path: "latestMessage.sender",
+        select: "username pic email",
+      });
+      res.status(200).send(results);
     } catch (error) {
       res.status(400);
       throw new Error(error.message);
@@ -106,6 +100,7 @@ Router.get(
 
 Router.post(
   "/group",
+  fetchUser,
   asyncHandler(async (req, res) => {
     if (!req.body.users || !req.body.name) {
       return res.status(400).send({ message: "Please Fill all the feilds" });
@@ -119,14 +114,14 @@ Router.post(
         .send("More than 2 users are required to form a group chat");
     }
 
-    users.push(req.user);
+    users.push(req.userId);
 
     try {
       const groupChat = await Chat.create({
         chatName: req.body.name,
         users: users,
         isGroupChat: true,
-        groupAdmin: req.user,
+        groupAdmin: req.userId,
       });
 
       const fullGroupChat = await Chat.findOne({ _id: groupChat._id })
@@ -145,6 +140,7 @@ Router.post(
 
 Router.put(
   "/rename",
+  fetchUser,
   asyncHandler(async (req, res) => {
     const { chatId, chatName } = req.body;
 
@@ -173,6 +169,7 @@ Router.put(
 
 Router.put(
   "/removefromgroup",
+  fetchUser,
   asyncHandler(async (req, res) => {
     const { chatId, userId } = req.body;
     const removed = await Chat.findByIdAndUpdate(
@@ -200,6 +197,7 @@ Router.put(
 
 Router.put(
   "/addtogroup",
+  fetchUser,
   asyncHandler(async (req, res) => {
     const { chatId, userId } = req.body;
     const added = await Chat.findByIdAndUpdate(
@@ -227,9 +225,9 @@ Router.put(
 
 Router.get(
   "/message/:chatId",
+  fetchUser,
   asyncHandler(async (req, res) => {
     try {
-      console.log("sddssd");
       const messages = await Message.find({ chat: req.params.chatId })
         .populate("sender", "username pic email")
         .populate("chat");
@@ -249,10 +247,7 @@ Router.post(
   asyncHandler(async (req, res) => {
     const { content, chatId } = req.body;
 
-    console.log("content");
-
     if (!content || !chatId) {
-      console.log("Invalid data passed into request");
       return res.sendStatus(400);
     }
 
@@ -261,7 +256,6 @@ Router.post(
       content: content,
       chat: chatId,
     };
-    console.log("newMessage");
 
     try {
       var message = await Message.create(newMessage);

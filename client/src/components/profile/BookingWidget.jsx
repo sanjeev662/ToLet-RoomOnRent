@@ -99,6 +99,7 @@ export default function BookingWidget({ place }) {
             <input
               type="date"
               value={checkIn}
+              min={new Date().toISOString().split("T")[0]}
               onChange={(ev) => setCheckIn(ev.target.value)}
             />
           </div>
@@ -107,8 +108,12 @@ export default function BookingWidget({ place }) {
             <input
               type="date"
               value={checkOut}
+              min={checkIn || new Date().toISOString().split("T")[0]}
               onChange={(ev) => setCheckOut(ev.target.value)}
             />
+            {checkIn && checkOut && numberOfNights <= 0 && (
+              <p style={{color:'red', fontSize:'12px', marginTop:'4px'}}>Check-out must be after check-in.</p>
+            )}
           </div>
         </div>
         <div className="py-3 px-4 border-t">
@@ -116,7 +121,7 @@ export default function BookingWidget({ place }) {
           <input
             type="number"
             value={numberOfGuests}
-            onChange={(ev) => setNumberOfGuests(ev.target.value)}
+            onChange={(ev) => setNumberOfGuests(parseInt(ev.target.value, 10) || 1)}
           />
         </div>
         {numberOfNights > 0 && (

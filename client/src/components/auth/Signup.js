@@ -13,7 +13,7 @@ const Signup = (props) => {
   const [credentials, setCredentials] = useState({
     fname: "",
     lname: "",
-    email: props.email,
+    email: props.email || "",
     password: "",
     phone: "",
     authcode: null,
@@ -38,24 +38,22 @@ const Signup = (props) => {
       history("/");
     }
 
-    /* global google */
-    const initGAuth = async () => {
-      await google.accounts.id.initialize({
-        client_id:
-          "732128756874-psijih5njkbsr2l62rlf303n9l0173pv.apps.googleusercontent.com",
+    const initGAuth = () => {
+      if (typeof google === "undefined" || !google.accounts) return;
+      google.accounts.id.initialize({
+        client_id: "732128756874-psijah5njkbsr2l62rlf303n9l0173pv.apps.googleusercontent.com",
         callback: handleCallbackResponse,
       });
-
-      await google.accounts.id.renderButton(
+      google.accounts.id.renderButton(
         document.getElementById("googlebtn"),
-        {
-          theme: "none",
-          longtitle: true,
-        }
+        { theme: "none", longtitle: true }
       );
     };
-
-    initGAuth();
+    if (typeof google !== "undefined" && google.accounts) {
+      initGAuth();
+    } else {
+      window.onGoogleLibraryLoad = initGAuth;
+    }
   }, []);
 
   /////////////////////////////////////////////gooogle end//////////////////////////////////////////////////////////////////////
@@ -241,7 +239,7 @@ const Signup = (props) => {
       } else {
         swal({
           title: "Try Again!",
-          text: "error",
+          text: json.message || "Something went wrong. Please try again.",
           icon: "error",
           button: "Ok!",
         });
@@ -291,7 +289,7 @@ const Signup = (props) => {
       } else {
         swal({
           title: "Try Again!",
-          text: "error",
+          text: json.message || "Something went wrong. Please try again.",
           icon: "error",
           button: "Ok!",
         });
@@ -343,7 +341,7 @@ const Signup = (props) => {
         } else {
           swal({
             title: "Try Again!",
-            text: "error",
+            text: json.message || "Something went wrong. Please try again.",
             icon: "error",
             button: "Ok!",
           });
@@ -388,7 +386,7 @@ const Signup = (props) => {
         } else {
           swal({
             title: "Try Again!",
-            text: "error",
+            text: json.message || "Something went wrong. Please try again.",
             icon: "error",
             button: "Ok!",
           });
@@ -699,8 +697,8 @@ const Signup = (props) => {
                     authorizationUrl="https://www.facebook.com/v12.0/dialog/oauth"
                     responseType="token"
                     clientId="303882562045636"
-                    redirectUri="https://to-let-room-on-rent.vercel.app/"
-                    scope="public_profile"
+                    redirectUri={window.location.origin + "/"}
+                    scope="public_profile,email"
                     onSuccess={handleFacebookResponse}
                   >
                     <i className="fa-brands fa-facebook fa-lg" />

@@ -36,19 +36,12 @@ function Hotel() {
     setFilterDatas(filter);    
   };
 
-  const handleReset = async (e) => {
+  const handleReset = (e) => {
     e.preventDefault();
-
-    setFilter({
-      address: "",
-      placetype: "Hotel",
-    });
-    setFilterData({
-      address: "",
-      placetype: "Hotel",
-    });
-
-    await getData();
+    const cleared = { address: "", placetype: "Hotel" };
+    setFilter(cleared);
+    setFilterData(cleared);
+    setFilterDatas(cleared);
   };
 
   const removeFilter = async (f) => {
@@ -109,9 +102,10 @@ function Hotel() {
       setTotalCount(responseData.Pagination.count);
     }
     
-    setFilterData({
+    setFilterData(prev => ({
+      ...prev,
       address: "",
-    });
+    }));
   } catch (err) {
     swal({
       title: "Try Again!",
@@ -195,9 +189,7 @@ function Hotel() {
                     />
                     <datalist id="data">
                       {list.map((op, i) => (
-                        <option>
-                          {op.name} , {op.state}
-                        </option>
+                        <option key={i} value={`${op.name} , ${op.state}`} />
                       ))}
                     </datalist>
                   </div>
@@ -294,7 +286,7 @@ function Hotel() {
             ) : (
 
               hotels.map((hotel) => (
-                <div className="shadow-0 border rounded-3 card mx-4 mt-4 mb-2">
+                <div key={hotel._id} className="shadow-0 border rounded-3 card mx-4 mt-4 mb-2">
                   <div className="card-body px-4 py-4">
                     <div className="row">
                       <div className="col-md-12 col-lg-3 mb-4 mb-lg-0">

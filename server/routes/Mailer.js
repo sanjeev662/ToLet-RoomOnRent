@@ -20,13 +20,7 @@ const Mailer = async (to, sub, body) => {
             from: email,
             to: to,
             subject: sub,
-            attachments: [
-                {   // utf-8 string as an attachment
-                    filename: 'https://res.cloudinary.com/dgamp83c3/image/upload/v1690659104/to-let-images/rentlogo_jzns35.png',
-                    content: 'logo',
-                    cid: "8303203jdidca0dxs2"
-                }
-            ],
+            attachments: [],
             html: `<html>
             <head>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"

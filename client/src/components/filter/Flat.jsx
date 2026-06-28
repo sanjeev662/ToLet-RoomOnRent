@@ -36,19 +36,12 @@ function Flat() {
     setFilterDatas(filter);
   };
 
-  const handleReset = async (e) => {
+  const handleReset = (e) => {
     e.preventDefault();
-
-    setFilter({
-      address: "",
-      placetype: "Flat",
-    });
-    setFilterData({
-      address: "",
-      placetype: "Flat",
-    });
-
-    await getData();
+    const cleared = { address: "", placetype: "Flat" };
+    setFilter(cleared);
+    setFilterData(cleared);
+    setFilterDatas(cleared);
   };
 
   const removeFilter = async (f) => {
@@ -108,9 +101,10 @@ function Flat() {
         setPageCount(responseData.Pagination.pageCount);
         setTotalCount(responseData.Pagination.count);
       }
-      setFilterData({
+      setFilterData(prev => ({
+        ...prev,
         address: "",
-      });
+      }));
     } catch (err) {
       swal({
         title: "Try Again!",
@@ -194,9 +188,7 @@ function Flat() {
                     />
                     <datalist id="data">
                       {list.map((op, i) => (
-                        <option>
-                          {op.name} , {op.state}
-                        </option>
+                        <option key={i} value={`${op.name} , ${op.state}`} />
                       ))}
                     </datalist>
                   </div>
@@ -297,7 +289,7 @@ function Flat() {
               </div>
             ) : (
               flats.map((flat) => (
-                <div className="shadow-0 border rounded-3 card mx-4 mt-4 mb-2">
+                <div key={flat._id} className="shadow-0 border rounded-3 card mx-4 mt-4 mb-2">
                   <div className="card-body px-4 py-4">
                     <div className="row">
                       <div className="col-md-12 col-lg-3 mb-4 mb-lg-0">
@@ -306,7 +298,7 @@ function Flat() {
                             src={
                               flat.photos && flat.photos.length > 0
                                 ? flat.photos[0]
-                                : require("./hotel1.jpg")
+                                : require("../../assets/media/images/flat/flat1.jpg")
                             }
                             fluid
                             className="w-100"

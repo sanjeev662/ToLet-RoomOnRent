@@ -159,13 +159,9 @@ function Saved() {
   };
 
   useEffect(() => {
-    if (!islogin) {
-      swal({
-        title: "Login Required!",
-        text: "Go to Login Page!",
-        icon: "error",
-        button: "Ok!",
-      });
+    const token = localStorage.getItem("token");
+    if (!islogin || !token) {
+      swal({ title: "Login Required!", text: "Go to Login Page!", icon: "error", button: "Ok!" });
       navigate("/login");
     } else {
       getData();
@@ -448,7 +444,7 @@ function Saved() {
                   Previous Page
                 </button>
                 <button
-                  disabled={currentPage === pageCount}
+                  disabled={currentPage === pageCount || pageCount === 0}
                   onClick={handleNextPage}
                 >
                   Next Page

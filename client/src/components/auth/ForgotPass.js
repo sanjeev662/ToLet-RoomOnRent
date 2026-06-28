@@ -6,7 +6,7 @@ import { url } from "../../utils/Constants";
 
 const ForgotPass = (props) => {
   const [credentials, setCredentials] = useState({
-    email: props.email,
+    email: props.email || "",
     password: "",
     authcode: null,
   });
@@ -31,7 +31,7 @@ const ForgotPass = (props) => {
     event.preventDefault();
     if (validateMail()) {
       try {
-        const response = await fetch(`${url}/fogotpassword/`, {
+        const response = await fetch(`${url}/forgotpassword/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const ForgotPass = (props) => {
         } else {
           swal({
             title: "Try Again!",
-            text: "error",
+            text: json.message || "Something went wrong. Please try again.",
             icon: "error",
             button: "Ok!",
           });
@@ -75,7 +75,7 @@ const ForgotPass = (props) => {
     event.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch(`${url}/fogotpassword/verify`, {
+        const response = await fetch(`${url}/forgotpassword/verify`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -144,7 +144,7 @@ const ForgotPass = (props) => {
     if (!credentials.authcode) {
       errors.authcode = "authcode is required";
       isValid = false;
-    } else if (credentials.authcode?.length != 6) {
+    } else if (credentials.authcode?.length !== 6) {
       errors.authcode = "authcode must be of 6 characters";
       isValid = false;
     }

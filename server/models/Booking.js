@@ -6,6 +6,7 @@ const bookingSchema = new mongoose.Schema({
   owner: {type:mongoose.Schema.Types.ObjectId, required:true},
   checkIn: {type:Date, required:true},
   checkOut: {type:Date, required:true},
+  numberOfGuests: {type: Number, default: 1},
   name: {type:String, required:true},
   phone: {type:String, required:true},
   price: Number,

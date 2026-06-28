@@ -32,7 +32,7 @@ export default function BookingsPage() {
       if (res.status === 400 || !data) {
         swal({
           title: "Error!" ,
-          text: data.message,
+          text: data?.message || "Something went wrong.",
           icon: "error",
           button: "Ok!",
         });
@@ -56,19 +56,15 @@ export default function BookingsPage() {
   };
 
   const getBookings = async () => {
-    try{
-    axios
-      .get(`${url}/booking/allbookings`, {
+    try {
+      const response = await axios.get(`${url}/booking/allbookings`, {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           token: authToken,
         },
-      })
-      .then((response) => {
-        setBookings(response.data);
-        setIsLoading(false);
       });
+      setBookings(response.data);
     } catch (err) {
       swal({
         title: "Try Again!",
@@ -76,6 +72,8 @@ export default function BookingsPage() {
         icon: "error",
         button: "Ok!",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 

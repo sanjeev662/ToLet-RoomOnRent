@@ -112,10 +112,12 @@ const Home = () => {
   const [hotels, setHotels] = useState(null);
   const [rooms, setRooms] = useState(null);
   const [flats, setFlats] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [hotelsLoading, setHotelsLoading] = useState(true);
+  const [roomsLoading, setRoomsLoading] = useState(true);
+  const [flatsLoading, setFlatsLoading] = useState(true);
 
   const getHotels = async () => {
-    setIsLoading(true);
+    setHotelsLoading(true);
     try{
     const req = `${url}/places?page=1&size=10&address=${""}&placetype=hotel`;
 
@@ -140,12 +142,13 @@ const Home = () => {
       icon: "error",
       button: "Ok!",
     });
+  } finally {
+    setHotelsLoading(false);
   }
-  setIsLoading(false);
   };
 
   const getRooms = async () => {
-    setIsLoading(true);
+    setRoomsLoading(true);
     try{
     const req = `${url}/places?page=1&size=10&address=${""}&placetype=room`;
 
@@ -170,12 +173,13 @@ const Home = () => {
       icon: "error",
       button: "Ok!",
     });
+  } finally {
+    setRoomsLoading(false);
   }
-  setIsLoading(false);
   };
 
   const getFlats = async () => {
-    setIsLoading(true);
+    setFlatsLoading(true);
     try{
     const req = `${url}/places?page=1&size=10&address=${""}&placetype=flat`;
 
@@ -200,8 +204,9 @@ const Home = () => {
       icon: "error",
       button: "Ok!",
     });
+  } finally {
+    setFlatsLoading(false);
   }
-  setIsLoading(false);
   };
 
   // useEffect(() => {
@@ -225,7 +230,7 @@ const Home = () => {
       <Welcome />
       <SlidingBrands title={"Get Your Own Place"} small={"Your Dream Cities"} />
 
-      {isLoading ? (
+      {roomsLoading ? (
         <div
           className="circle"
           style={{
@@ -236,7 +241,7 @@ const Home = () => {
         >
           <CircularProgress />
         </div>
-        ) : !rooms ? ( 
+        ) : !rooms ? (
           <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="col-md-6">
@@ -261,7 +266,7 @@ const Home = () => {
         type={"Room"}
       />
       <hr className="mb-5 p-2" />
-      {isLoading ? (
+      {hotelsLoading ? (
         <div
           className="circle"
           style={{
@@ -272,7 +277,7 @@ const Home = () => {
         >
           <CircularProgress />
         </div>
-        ) : !hotels ? ( 
+        ) : !hotels ? (
           <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="col-md-6">
@@ -297,7 +302,7 @@ const Home = () => {
         type={"Hotel"}
       />
       <hr className="mb-5 p-2" />
-      {isLoading ? (
+      {flatsLoading ? (
         <div
           className="circle"
           style={{
@@ -308,7 +313,7 @@ const Home = () => {
         >
          <CircularProgress />
         </div>
-        ) : !flats ? ( 
+        ) : !flats ? (
           <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="col-md-6">

@@ -33,17 +33,16 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    // if (!islogin) {
-      if (!(localStorage.getItem("userInfo"))) {
+    if (!islogin && !localStorage.getItem("userInfo")) {
       swal({
-        title: "Login Required!" ,
+        title: "Login Required!",
         text: "Go to Login Page!",
         icon: "error",
         button: "Ok!",
       });
       navigate("/login");
     }
-  }, []);
+  }, [islogin, navigate]);
 
   return (
     <div className="section">

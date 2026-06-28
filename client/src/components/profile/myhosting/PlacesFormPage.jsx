@@ -36,53 +36,46 @@ export default function PlacesFormPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!islogin) {
-      swal({
-        title: "Login Required!",
-        text: "Go to Login Page!",
-        icon: "error",
-        button: "Ok!",
-      });
-      navigate("/login");
-    } else {
-      try {
-        if (!id) {
-          return;
-        }
-        axios
-          .get(`${url}/places/` + id, {
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-              token: authToken,
-            },
-          })
-          .then((response) => {
-            const { data } = response;
-            setTitle(data.title);
-            setPlacetype(data.placetype);
-            setAddress(data.address);
-            setAddedPhotos(data.photos);
-            setDescription(data.description);
-            setPerks(data.perks);
-            setExtraInfo(data.extraInfo);
-            setCheckIn(data.checkIn);
-            setCheckOut(data.checkOut);
-            setMaxGuests(data.maxGuests);
-            setPrice(data.price);
-            setLatitude(data.latitude);
-            setLongitude(data.longitude);
-          });
-      } catch (err) {
-        swal({
-          title: "Try Again!",
-          text: "server is down!",
-          icon: "error",
-          button: "Ok!",
-        });
+    const fetchPlace = async () => {
+      if (!islogin) {
+        swal({ title: "Login Required!", text: "Go to Login Page!", icon: "error", button: "Ok!" });
+        navigate("/login");
+        return;
       }
-    }
-  }, [id]);
+      if (!id) {
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const response = await axios.get(`${url}/places/` + id, {
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            token: authToken,
+          },
+        });
+        const { data } = response;
+        setTitle(data.title);
+        setPlacetype(data.placetype);
+        setAddress(data.address);
+        setAddedPhotos(data.photos);
+        setDescription(data.description);
+        setPerks(data.perks);
+        setExtraInfo(data.extraInfo);
+        setCheckIn(data.checkIn);
+        setCheckOut(data.checkOut);
+        setMaxGuests(data.maxGuests);
+        setPrice(data.price);
+        setLatitude(data.latitude);
+        setLongitude(data.longitude);
+      } catch (err) {
+        swal({ title: "Try Again!", text: "server is down!", icon: "error", button: "Ok!" });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPlace();
+  }, [id, islogin]);
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4">{text}</h2>;
   }
@@ -101,6 +94,10 @@ export default function PlacesFormPage() {
   async function savePlace(ev) {
     try {
       ev.preventDefault();
+      if (!title.trim()) return swal({ title: "Validation Error", text: "Title is required.", icon: "warning", button: "Ok!" });
+      if (!address.trim()) return swal({ title: "Validation Error", text: "Address is required.", icon: "warning", button: "Ok!" });
+      if (!placetype) return swal({ title: "Validation Error", text: "Place type is required.", icon: "warning", button: "Ok!" });
+      if (addedPhotos.length === 0) return swal({ title: "Validation Error", text: "At least one photo is required.", icon: "warning", button: "Ok!" });
       const placeData = {
         title,
         address,
@@ -184,9 +181,7 @@ export default function PlacesFormPage() {
         />
         <datalist id="data">
           {list.map((op, i) => (
-            <option>
-              {op.name} , {op.state}
-            </option>
+            <option key={i} value={`${op.name} , ${op.state}`} />
           ))}
         </datalist>
 

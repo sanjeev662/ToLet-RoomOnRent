@@ -8,8 +8,6 @@ const PassValidator = require("../models/Forgotpass");
 const bcrypt = require("bcryptjs");
 const Mailer = require("./Mailer");
 
-let authCodeCheck;
-
 Router.post(
   "/",
   [body("email", "Enter a valid email address").isEmail()],
@@ -37,7 +35,6 @@ Router.post(
       // console.log(trashCode);
 
       const authCode = Math.floor(100000 + Math.random() * 900000);
-      authCodeCheck = authCode;
 
       const msg = `Oops, seems like you forgot your password. No worries, Use the OTP below to reset your password and get back on track.<br>
         [${authCode}]<br>
@@ -48,7 +45,7 @@ Router.post(
         await Mailer(req.body.email, "Dont Worry, We've Got You Covered!", msg)
       ) {
         try {
-          let storeAuthCode = PassValidator.create({
+          let storeAuthCode = await PassValidator.create({
             email: req.body.email,
             authcode: authCode,
           });
@@ -118,8 +115,8 @@ Router.post(
                     { email: req.body.email },
                     { password: hashedPassword }
                   );
-                  res.json({ success: true, message: "verified" });
                   await PassValidator.deleteOne({ email: req.body.email });
+                  res.json({ success: true, message: "verified" });
                 } catch (error) {
                   console.error(error.message);
                   res

@@ -35,21 +35,19 @@ export default function BookingPage() {
     } else {
       try {
         if (id) {
-          axios
-            .get(`${url}/booking/allbookings`, {
-              headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                token: authToken,
-              },
-            })
-            .then((response) => {
-              const foundBooking = response.data.find(({ _id }) => _id === id);
-              if (foundBooking) {
-                setBooking(foundBooking);
-                setIsLoading(false);
-              }
-            });
+          const response = await axios.get(`${url}/booking/allbookings`, {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              token: authToken,
+            },
+          });
+          const foundBooking = response.data.find(({ _id }) => _id === id);
+          if (foundBooking) {
+            setBooking(foundBooking);
+          } else {
+            swal({ title: "Not Found!", text: "Booking not found.", icon: "error", button: "Ok!" });
+          }
         }
       } catch (err) {
         swal({
@@ -58,13 +56,11 @@ export default function BookingPage() {
           icon: "error",
           button: "Ok!",
         });
+      } finally {
+        setIsLoading(false);
       }
     }
   }, [id]);
-
-  if (!booking) {
-    return "";
-  }
 
   const accessChat = async (guestuserId) => {
     try {
@@ -110,7 +106,7 @@ export default function BookingPage() {
             >
               <CircularProgress />
             </div>
-          ) : booking.length === 0 ? (
+          ) : !booking ? (
             <>
               <p>No More data available.</p>
               <Link
@@ -140,7 +136,9 @@ export default function BookingPage() {
             </>
           )}
         </div>
-        <AddressLink className="block">{booking.place.address}</AddressLink>
+        {booking && booking.place && (
+          <AddressLink className="block">{booking.place.address}</AddressLink>
+        )}
 
         <div className="bg-gray-200 p-6 my-6 rounded-2xl flex items-center justify-between">
           <div>

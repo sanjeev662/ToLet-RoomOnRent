@@ -165,7 +165,8 @@ const MyChats = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+    const raw = localStorage.getItem("userInfo");
+    if (raw) setLoggedUser(JSON.parse(raw));
     fetchChats();
   }, [fetchAgain]);
 
@@ -260,7 +261,7 @@ const MyChats = ({ fetchAgain }) => {
         borderRadius="lg"
         overflowY="hidden"
       >
-        {chats ? (
+        {Array.isArray(chats) ? (
           <Stack overflowY="scroll">
             {chats.map((chat) => (
               <Box
@@ -280,7 +281,7 @@ const MyChats = ({ fetchAgain }) => {
                 </Text>
                 {chat.latestMessage && (
                   <Text fontSize="xs">
-                    <b>{chat.latestMessage.sender.username} : </b>
+                    <b>{chat.latestMessage?.sender?.username ?? "Unknown"} : </b>
                     {chat.latestMessage.content.length > 50
                       ? chat.latestMessage.content.substring(0, 51) + "..."
                       : chat.latestMessage.content}

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const connectToMongo = require("./db");
 const cloudinary = require("cloudinary").v2;
@@ -9,7 +10,11 @@ const port = process.env.PORT || 5001;
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || "https://to-let-room-on-rent.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+}));
 
 // Connect to MongoDB
 connectToMongo();
@@ -23,7 +28,7 @@ cloudinary.config({
 
 // Available routes
 app.use('/auth', require('./routes/auth'))
-app.use('/fogotpassword', require('./routes/forgotpass'));
+app.use('/forgotpassword', require('./routes/forgotpass'));
 app.use('/oauth', require('./routes/oauth'));
 app.use('/testimonial', require('./routes/testimonial'))
 
@@ -79,9 +84,8 @@ io.on("connection", (socket) => {
   socket.on("typing", (room) => socket.in(room).emit("typing"));
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
-  socket.off("setup", () => {
+  socket.on("disconnect", () => {
     console.log("USER DISCONNECTED");
-    socket.leave(userData._id);
   });
 });
 

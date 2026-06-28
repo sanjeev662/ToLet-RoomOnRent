@@ -58,7 +58,7 @@ function FeaturedCards({ images ,type}) {
                  <Link to={`/detail/${data._id}`}>
                     <div className="featureopp-card">
                       <div className="featureopp-card-img">
-                        <img src={data.photos[0]} alt="banner" />
+                        <img src={data.photos && data.photos.length > 0 ? data.photos[0] : ''} alt="banner" />
                       </div>
                       <div className="featureopp-card-content">
                         <h4>{data.title}</h4>
@@ -70,7 +70,7 @@ function FeaturedCards({ images ,type}) {
                             <s>₹{type === 'Hotel' ? data.price+30 : data.price * 30+60}</s>
                           </span>
                           {/* <h4>&nbsp{type === 'Hotel' ? "per night" : "per month"}</h4> */}
-                          <h4>&nbsp;{type === 'Hotel' ? "per night" : "per month"}</h4>;
+                          <h4>&nbsp;{type === 'Hotel' ? "per night" : "per month"}</h4>
 
                         </div>
                         {/* <div className="featureopp-card-bottom">

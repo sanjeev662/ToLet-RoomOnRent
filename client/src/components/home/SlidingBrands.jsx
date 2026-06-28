@@ -4,7 +4,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 
 const SlidingBrands = ({ small, title }) => {
   const brands = [
@@ -57,7 +57,7 @@ const SlidingBrands = ({ small, title }) => {
             pagination={{
               clickable: true,
             }}
-            modules={[Autoplay]}
+            modules={[Autoplay, Pagination]}
             speed={2000}
           >
             {brands.map((ele, i) => {

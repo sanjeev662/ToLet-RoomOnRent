@@ -72,6 +72,10 @@ Router.delete("/cancelbooking/:id", fetchUser, async (req, res) => {
       return res.status(404).json({ message: "booking not found" });
     }
 
+    if (bookings.user.toString() !== userId.toString()) {
+      return res.status(403).json({ message: "Not authorized to cancel this booking" });
+    }
+
     const placeDoc = await Place.findOne( { _id: bookings.place } );
     if (!placeDoc) {
       return res.status(404).json({ message: "Place not found." });
@@ -95,7 +99,7 @@ Router.get("/allbookings", fetchUser, async (req, res) => {
     const userId = req.userId;
     const booked = await Booking.find({ user: userId })
       .populate("place")
-      .sort({ createdAt: -1 });
+      .sort({ datecreated: -1 });
     res.send(booked);
   } catch (error) {
     res
@@ -125,14 +129,17 @@ Router.post("/addsaved/:id", fetchUser, async (req, res) => {
         .json({ message: "Already added in wishlist", success: false });
     }
 
-    if (Usercontact) {
-      const savedData = await Usercontact.addsaveddata(saved);
-
-      await Usercontact.save();
-      res.status(201).json({ message: "Successfully added in wishlist", success: true });
+    if (!Usercontact) {
+      return res.status(404).json({ message: "User not found", success: false });
     }
+
+    const savedData = await Usercontact.addsaveddata(saved);
+
+    await Usercontact.save();
+    res.status(201).json({ message: "Successfully added in wishlist", success: true });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Some error occurred", success: false });
   }
 });
 
@@ -146,7 +153,7 @@ Router.delete("/removesaved/:id", fetchUser, async (req, res) => {
       return cruval._id != id;
     });
 
-    userdata.save();
+    await userdata.save();
     res.status(201).json(userdata);
   } catch (error) {
     console.log(error + "jwt provide then remove");
