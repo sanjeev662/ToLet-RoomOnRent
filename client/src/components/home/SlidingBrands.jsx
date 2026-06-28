@@ -60,7 +60,7 @@ const SlidingBrands = ({ small, title }) => {
                 <SwiperSlide key={i}>
                   <img
                     src={ele}
-                    alt={"brand"}
+                    alt={"city"}
                   />
                 </SwiperSlide>
               );

@@ -230,113 +230,58 @@ const Home = () => {
       <Welcome />
       <SlidingBrands title={"Get Your Own Place"} small={"Your Dream Cities"} />
 
-      {roomsLoading ? (
-        <div
-          className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-        ) : !rooms ? (
-          <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-            <div className="text-center d-grid" style={{gap:"6px"}}>
-              <h1><strong>Error!</strong></h1>
-                <p>
-                  Sorry, Failed to Load !
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : rooms.length === 0 ? (
-        ""
-      ) : (
-        <FeaturedCards images={rooms} type={"Room"} />
-      )}
       <CommonCards
         images={room}
         heading={"Rooms"}
         content={"Get rooms available for you in your area"}
         type={"Room"}
       />
-      <hr className="mb-5 p-2" />
-      {hotelsLoading ? (
+      {roomsLoading ? (
         <div
           className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
         >
           <CircularProgress />
         </div>
-        ) : !hotels ? (
-          <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-            <div className="text-center d-grid" style={{gap:"6px"}}>
-              <h1><strong>Error!</strong></h1>
-                <p>
-                  Sorry, Failed to Load !
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : hotels.length === 0 ? (
-        ""
-      ) : (
-        <FeaturedCards images={hotels} type={"Hotel"} />
-      )}
+      ) : rooms && rooms.length > 0 ? (
+        <FeaturedCards images={rooms} type={"Room"} />
+      ) : null}
+      <hr className="mb-5 p-2" />
+
       <CommonCards
         images={hotel}
         heading={"Hotels"}
         content={"Get hotels available for you in your area"}
         type={"Hotel"}
       />
-      <hr className="mb-5 p-2" />
-      {flatsLoading ? (
+      {hotelsLoading ? (
         <div
           className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
         >
-         <CircularProgress />
+          <CircularProgress />
         </div>
-        ) : !flats ? (
-          <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-            <div className="text-center d-grid" style={{gap:"6px"}}>
-              <h1><strong>Error!</strong></h1>
-                <p>
-                  Sorry, Failed to Load !
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : flats.length === 0 ? (
-        ""
-      ) : (
-        <FeaturedCards images={flats} type={"Flat"} />
-      )}
+      ) : hotels && hotels.length > 0 ? (
+        <FeaturedCards images={hotels} type={"Hotel"} />
+      ) : null}
+      <hr className="mb-5 p-2" />
+
       <CommonCards
         images={flat}
         heading={"Flats"}
         content={"Get flats available for you in your area"}
         type={"Flat"}
       />
+      {flatsLoading ? (
+        <div
+          className="circle"
+          style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
+          <CircularProgress />
+        </div>
+      ) : flats && flats.length > 0 ? (
+        <FeaturedCards images={flats} type={"Flat"} />
+      ) : null}
     </>
   );
 };
