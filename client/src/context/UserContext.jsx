@@ -45,8 +45,9 @@ export function UserContextProvider({ children }) {
       const json = await response.json();
       if (json.success === true) {
         setIslogin(true);
-        setUser(json);
-        setUsername(String(json.data.firstName + " " + json.data.lastName));
+        if (json.data) {
+          setUsername(String(json.data.firstName + " " + json.data.lastName));
+        }
       } else if(json.success === false){
         setIslogin(false);
         localStorage.removeItem("token");

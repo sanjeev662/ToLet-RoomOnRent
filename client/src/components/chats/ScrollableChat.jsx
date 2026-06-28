@@ -1,53 +1,75 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Tooltip } from "@chakra-ui/tooltip";
 import ScrollableFeed from "react-scrollable-feed";
-import {
-  isLastMessage,
-  isSameSender,
-  isSameSenderMargin,
-  isSameUser,
-} from "./config/ChatLogics";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext.jsx";
+
 const ScrollableChat = ({ messages }) => {
-  const {
-    user,
-  } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+
+  if (!user) return null;
 
   return (
     <ScrollableFeed>
       {messages &&
-        messages.map((m, i) => (
-          <div style={{ display: "flex" }} key={m._id}>
-            {(isSameSender(messages, m, i, user._id) ||
-              isLastMessage(messages, i, user._id)) && (
-              <Tooltip label={m.sender.username} placement="bottom-start" hasArrow>
-                <Avatar
-                  mt="7px"
-                  mr={1}
-                  size="sm"
-                  cursor="pointer"
-                  name={m.sender.username}
-                  src={m.sender.pic}
-                />
-              </Tooltip>
-            )}
-            <span
+        messages.map((m, i) => {
+          const isOwn = m.sender._id === user._id;
+          const prevSame = i > 0 && messages[i - 1].sender._id === m.sender._id;
+          const nextSame =
+            i < messages.length - 1 &&
+            messages[i + 1].sender._id === m.sender._id;
+          const showAvatar = !isOwn && !nextSame;
+
+          return (
+            <div
+              key={m._id}
               style={{
-                backgroundColor: `${
-                  m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
-                }`,
-                marginLeft: isSameSenderMargin(messages, m, i, user._id),
-                marginTop: isSameUser(messages, m, i, user._id) ? 3 : 10,
-                borderRadius: "20px",
-                padding: "5px 15px",
-                maxWidth: "75%",
+                display: "flex",
+                justifyContent: isOwn ? "flex-end" : "flex-start",
+                alignItems: "flex-end",
+                marginTop: prevSame ? "2px" : "10px",
               }}
             >
-              {m.content}
-            </span>
-          </div>
-        ))}
+              {/* avatar placeholder to keep bubble indented even when avatar hidden */}
+              {!isOwn && (
+                showAvatar ? (
+                  <Tooltip
+                    label={m.sender.username}
+                    placement="bottom-start"
+                    hasArrow
+                  >
+                    <Avatar
+                      mr={1}
+                      size="sm"
+                      cursor="pointer"
+                      name={m.sender.username}
+                      src={m.sender.pic}
+                      flexShrink={0}
+                    />
+                  </Tooltip>
+                ) : (
+                  <span style={{ width: "32px", flexShrink: 0 }} />
+                )
+              )}
+
+              <span
+                style={{
+                  backgroundColor: isOwn ? "#BEE3F8" : "#B9F5D0",
+                  borderRadius: isOwn
+                    ? "18px 18px 4px 18px"
+                    : "18px 18px 18px 4px",
+                  padding: "8px 14px",
+                  maxWidth: "70%",
+                  wordBreak: "break-word",
+                  marginLeft: isOwn ? "0" : "6px",
+                  marginRight: isOwn ? "6px" : "0",
+                }}
+              >
+                {m.content}
+              </span>
+            </div>
+          );
+        })}
     </ScrollableFeed>
   );
 };
