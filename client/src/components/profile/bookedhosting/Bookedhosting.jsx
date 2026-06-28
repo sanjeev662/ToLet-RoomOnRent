@@ -2,7 +2,7 @@ import AccountNav from "../AccountNav";
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import PlaceImg from "../PlaceImg";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BookingDates from "../mybooking/BookingDates";
 import { url } from "../../../utils/Constants";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -13,7 +13,7 @@ export default function Bookedhosting() {
   const [bookings, setBookings] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
-  const { islogin, setIslogin, setSelectedChat, setChats, chats } =
+  const { islogin, setSelectedChat } =
     useContext(UserContext);
   const navigate = useNavigate();
 
@@ -84,7 +84,7 @@ export default function Bookedhosting() {
     } else {
       getbookedHostings();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const accessChat = async (guestuserId) => {
     try {

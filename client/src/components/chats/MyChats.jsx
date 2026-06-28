@@ -1,11 +1,10 @@
-import { AddIcon } from "@chakra-ui/icons";
+import { BellIcon } from "@chakra-ui/icons";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getSender } from "./config/ChatLogics";
 import ChatLoading from "./ChatLoading";
-import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext.jsx";
@@ -15,14 +14,10 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
 import UserListItem from "./userAvatar/UserListItem";
 import { Spinner } from "@chakra-ui/spinner";
-import ProfileModal from "./miscellaneous/ProfileModal";
 import { Badge } from "@chakra-ui/react";
-import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { Avatar } from "@chakra-ui/avatar";
 import {
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
 } from "@chakra-ui/menu";
@@ -46,14 +41,11 @@ const MyChats = ({ fetchAgain }) => {
   const {
     loggedUser,
     setLoggedUser,
-    islogin,
-    setIslogin,
     selectedChat,
     setSelectedChat,
     searchResult,
     setSearchResult,
     user,
-    setUser,
     notification,
     setNotification,
     chats,
@@ -168,7 +160,7 @@ const MyChats = ({ fetchAgain }) => {
     const raw = localStorage.getItem("userInfo");
     if (raw) setLoggedUser(JSON.parse(raw));
     fetchChats();
-  }, [fetchAgain]);
+  }, [fetchAgain]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

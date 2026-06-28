@@ -18,7 +18,7 @@ const distanceToMouse = (pt, mp) => {
 export default function Map() {
   const [points, setPoints] = useState([]);
   const [isMapLoading, setIsMapLoading] = useState(true);
-  const { latitude, setLatitude, longitude, setLongitude } = useContext(UserContext);
+  const { setLatitude, setLongitude } = useContext(UserContext);
   const navigate = useNavigate();
   const [lastClickTime, setLastClickTime] = useState(0);
 

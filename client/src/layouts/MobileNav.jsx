@@ -4,7 +4,7 @@ import {AiOutlineHome} from "react-icons/ai";
 import { RiHotelLine , RiMapPinLine } from "react-icons/ri";
 import { BiMenu} from "react-icons/bi";
 import { BsChatLeftText } from "react-icons/bs";
-import { MdOutlineMeetingRoom,MdFamilyRestroom,MdOutlineLocalHotel } from "react-icons/md";
+import { MdOutlineMeetingRoom,MdOutlineLocalHotel } from "react-icons/md";
 
 const MobileNav = () => {
   return (

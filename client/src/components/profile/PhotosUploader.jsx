@@ -1,12 +1,9 @@
 import axios from "axios";
-import {useState} from "react";
 import Image from "./Image.jsx";
 import { url } from "../../utils/Constants";
 import swal from "sweetalert";
 
 export default function PhotosUploader({addedPhotos,onChange}) {
-  const [photoLink,setPhotoLink] = useState('');
-
   async function uploadPhoto(ev) {
     try {
       const files = ev.target.files;

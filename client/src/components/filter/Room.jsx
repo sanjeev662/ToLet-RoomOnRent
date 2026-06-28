@@ -12,7 +12,7 @@ function Room() {
   const [rooms, setRooms] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
-  const { islogin, setIslogin, setFilterData, filterData } =
+  const { islogin, setFilterData, filterData } =
     useContext(UserContext);
   const navigate = useNavigate();
 
@@ -42,11 +42,6 @@ function Room() {
     setFilter(cleared);
     setFilterData(cleared);
     setFilterDatas(cleared);
-  };
-
-  const removeFilter = async (f) => {
-    setFilterData({ ...filterData, [f]: "" });
-    setFilter({ ...filter, [f]: "" });
   };
 
   //for pagination
@@ -122,7 +117,7 @@ function Room() {
 
   useEffect(() => {
     getData();
-  }, [currentPage, pageSize, filterDatas, sort]);
+  }, [currentPage, pageSize, filterDatas, sort]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addtosaved = async (id) => {
     if (!islogin) {
@@ -283,8 +278,8 @@ function Room() {
                         moment.
                       </p>
                       <a
-                        href="#"
-                        onClick={handleReset}
+                        href="#!"
+                        onClick={(e) => { e.preventDefault(); handleReset(e); }}
                         className="btn btn-primary"
                       >
                         Remove All Filters

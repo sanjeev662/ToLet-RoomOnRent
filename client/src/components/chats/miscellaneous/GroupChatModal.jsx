@@ -25,20 +25,12 @@ const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [search, setSearch] = useState("");
+  const [, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
 
   const {
-    islogin,
-    setIslogin,
-    selectedChat,
-    setSelectedChat,
-    user,
-    setUser,
-    notification,
-    setNotification,
     chats,
     setChats,
   } = useContext(UserContext);

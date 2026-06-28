@@ -1,7 +1,7 @@
 import "../../../assets/styles/filter.css";
 import AccountNav from "../AccountNav";
 import React, { useEffect, useState, useContext } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { url } from "../../../utils/Constants";
 import list from "../../../assets/data/cities.json";
 import { UserContext } from "../../../context/UserContext.jsx";
@@ -12,7 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 function Saved() {
   const [isLoading, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
-  const { islogin, setIslogin } = useContext(UserContext);
+  const { islogin } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState({
@@ -47,11 +47,6 @@ function Saved() {
     });
 
     await getData();
-  };
-
-  const removeFilter = async (f) => {
-    setFilterData({ ...filterData, [f]: "" });
-    setFilter({ ...filter, [f]: "" });
   };
 
   //for pagination
@@ -166,7 +161,7 @@ function Saved() {
     } else {
       getData();
     }
-  }, [currentPage, pageSize, filterData]);
+  }, [currentPage, pageSize, filterData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="section">
@@ -251,8 +246,8 @@ function Saved() {
                     </div> */}
                       <div className="d-flex justify-content-end">
                         <a
-                          href="#"
-                          onClick={handleReset}
+                          href="#!"
+                          onClick={(e) => { e.preventDefault(); handleReset(e); }}
                           className="bg-primary text-white px-4 py-2 rounded"
                         >
                           Reset All

@@ -13,7 +13,7 @@ export default function BookingsPage() {
   const [bookings, setBookings] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
-  const { islogin,setIslogin} = useContext(UserContext);
+  const { islogin } = useContext(UserContext);
   const navigate = useNavigate();
 
 
@@ -89,7 +89,7 @@ export default function BookingsPage() {
     } else {
     getBookings();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="section">

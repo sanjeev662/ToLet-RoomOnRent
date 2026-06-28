@@ -14,7 +14,7 @@ export default function BookingWidget({ place }) {
   const [phone, setPhone] = useState("");
   const [redirect, setRedirect] = useState("");
 
-  const { islogin, setIslogin, user } = useContext(UserContext);
+  const { islogin, user } = useContext(UserContext);
   const authToken = localStorage.getItem("token");
   const navigate = useNavigate();
 

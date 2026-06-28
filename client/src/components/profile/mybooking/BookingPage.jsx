@@ -16,10 +16,7 @@ export default function BookingPage() {
   const authToken = localStorage.getItem("token");
   const {
     islogin,
-    setIslogin,
     setSelectedChat,
-    setChats,
-    chats,
   } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -63,7 +60,7 @@ export default function BookingPage() {
     }
     };
     fetchBooking();
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const accessChat = async (guestuserId) => {
     try {

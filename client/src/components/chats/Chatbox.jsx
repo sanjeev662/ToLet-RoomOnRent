@@ -6,16 +6,7 @@ import { UserContext } from "../../context/UserContext.jsx";
 
 const Chatbox = ({ fetchAgain, setFetchAgain }) => {
   const {
-    islogin,
-    setIslogin,
     selectedChat,
-    setSelectedChat,
-    user,
-    setUser,
-    notification,
-    setNotification,
-    chats,
-    setChats,
   } = useContext(UserContext);
 
   return (

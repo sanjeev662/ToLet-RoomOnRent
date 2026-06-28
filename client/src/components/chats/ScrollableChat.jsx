@@ -9,20 +9,9 @@ import {
 } from "./config/ChatLogics";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext.jsx";
-import {url} from "../../utils/Constants";
-
 const ScrollableChat = ({ messages }) => {
   const {
-    islogin,
-    setIslogin,
-    selectedChat,
-    setSelectedChat,
     user,
-    setUser,
-    notification,
-    setNotification,
-    chats,
-    setChats,
   } = useContext(UserContext);
 
   return (
