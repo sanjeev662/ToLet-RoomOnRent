@@ -54,7 +54,7 @@ Router.post(
         username: fullname,
         phone: req.body.phone,
         password: null,
-        googleId: Number(req.body.googleId),
+        googleId: req.body.googleId,
       });
 
       // to generation a token or a cookie to identify the user
@@ -65,7 +65,7 @@ Router.post(
       };
 
       // console.log(data);
-      const authToken = jwt.sign(data, JWT_SECRET);
+      const authToken = jwt.sign(data, JWT_SECRET, { expiresIn: '7d' });
       // console.log(authToken);
       const msg = `Dear ${req.body.fname + " " + req.body.lname},<br><br>
                                 Congratulations on taking the first step towards getting dream stays!  Get ready to embark on a seamless journey towards your dream . Our team support you throughout your journey.<br> 
@@ -118,7 +118,7 @@ Router.post(
         },
       };
 
-      const authToken = await jwt.sign(paylord, JWT_SECRET);
+      const authToken = jwt.sign(paylord, JWT_SECRET, { expiresIn: '7d' });
 
       await res.json({
         success: true,
@@ -178,7 +178,7 @@ Router.post(
         username: fullname,
         phone: req.body.phone,
         password: null,
-        facebookId: Number(req.body.facebookId),
+        facebookId: req.body.facebookId,
       });
 
       // to generation a token or a cookie to identify the user
@@ -189,9 +189,12 @@ Router.post(
       };
 
       // console.log(data);
-      const authToken = jwt.sign(data, JWT_SECRET);
+      const authToken = jwt.sign(data, JWT_SECRET, { expiresIn: '7d' });
 
       const sub = "Welcome to To-Let Platform!";
+      const msg = `Dear ${req.body.fname + " " + req.body.lname},<br><br>
+Congratulations! Your account is ready. Start exploring verified rooms, flats, and hotels on To-Let.<br><br>
+Best regards,<br>To-Let Team`;
 
       Mailer(req.body.email, sub, msg);
 
@@ -234,7 +237,7 @@ Router.post(
         },
       };
 
-      const authToken = await jwt.sign(paylord, JWT_SECRET);
+      const authToken = jwt.sign(paylord, JWT_SECRET, { expiresIn: '7d' });
 
       await res.json({
         success: true,

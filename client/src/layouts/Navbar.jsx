@@ -34,7 +34,7 @@ const Navbar = () => {
 
   React.useEffect(() => {
     checkToken();
-  }, [islogin]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -158,14 +158,13 @@ const Navbar = () => {
                       width={24}
                     /> */}
                       <Avatar className="profile-avtar" title={username}>
-                        {/* {username[0].toUpperCase()} */}
-                        {username[0]}
+                        {username && username.length > 0 ? username[0].toUpperCase() : "U"}
                       </Avatar>
                     </NavLink>
                   </li>
                   <li>
                     {/* <div className=""> */}
-                    <a href="" className="logout" onClick={logout}>
+                    <a href="#logout" className="logout" onClick={(e) => { e.preventDefault(); logout(); }}>
                       <img
                         src={require("../assets/media/images/icon-logout.png")}
                         title="Logout"

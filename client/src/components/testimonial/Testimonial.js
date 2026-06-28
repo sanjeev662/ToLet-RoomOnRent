@@ -14,6 +14,7 @@ function Testimonial({ testimonial }) {
         <img
           className="user-avatar img-fluid mx-auto d-block"
           src={testimonial.user_image}
+          alt={testimonial.user_name || "User avatar"}
         />
       </div>
       <i className="fa-solid fa-quote-right fa-flip-horizontal quote-default quote-start" />

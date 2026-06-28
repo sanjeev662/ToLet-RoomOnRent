@@ -23,6 +23,7 @@ const UserSchema = new mongoose.Schema({
   phone: {
     type: String,
     unique: true,
+    sparse: true,
     default: null,
   },
   pic:{
@@ -34,11 +35,11 @@ const UserSchema = new mongoose.Schema({
     default: null,
   },
   googleId: {
-    type: Number,
+    type: String,
     default: null,
   },
   facebookId: {
-    type: Number,
+    type: String,
     default: null,
   },
   date: {

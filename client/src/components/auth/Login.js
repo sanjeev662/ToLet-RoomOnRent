@@ -66,7 +66,7 @@ const Login = (props) => {
         } else {
           swal({
             title: "Try Again!",
-            text: "error",
+            text: json.message || "Something went wrong. Please try again.",
             icon: "error",
             button: "Ok!",
           });
@@ -242,7 +242,7 @@ const Login = (props) => {
       } else {
         swal({
           title: "Try Again!",
-          text: "error",
+          text: json.message || "Something went wrong. Please try again.",
           icon: "error",
           button: "Ok!",
         });
@@ -293,7 +293,7 @@ const Login = (props) => {
       } else {
         swal({
           title: "Try Again!",
-          text: "error",
+          text: json.message || "Something went wrong. Please try again.",
           icon: "error",
           button: "Ok!",
         });
@@ -314,24 +314,22 @@ const Login = (props) => {
     }
 
     /* global google */
-    const initGAuth = async () => {
-      await google.accounts.id.initialize({
-        client_id:
-          "732128756874-psijih5njkbsr2l62rlf303n9l0173pv.apps.googleusercontent.com",
+    const initGAuth = () => {
+      if (typeof google === "undefined" || !google.accounts) return;
+      google.accounts.id.initialize({
+        client_id: "732128756874-psijah5njkbsr2l62rlf303n9l0173pv.apps.googleusercontent.com",
         callback: handleCallbackResponse,
       });
-
-      await google.accounts.id.renderButton(
+      google.accounts.id.renderButton(
         document.getElementById("googlebtn"),
-        {
-          theme: "outline",
-          size: "large",
-          longtitle: true,
-        }
+        { theme: "outline", size: "large", longtitle: true }
       );
     };
-
-    initGAuth();
+    if (typeof google !== "undefined" && google.accounts) {
+      initGAuth();
+    } else {
+      window.onGoogleLibraryLoad = initGAuth;
+    }
   }, []);
 
   //for password to show
@@ -529,16 +527,14 @@ const Login = (props) => {
                 Or continue with
               </div>
               <div className="social-buttons d-flex justify-content-between pb-3">
-                <a href="/" id="googlebtn" className="social-icon">
-                  <i className="fa-brands fa-google fa-lg" />
-                </a>
+                <div id="googlebtn" className="social-icon"></div>
                 <OAuth2Login
                   className="social-icon"
                   authorizationUrl="https://www.facebook.com/v12.0/dialog/oauth"
                   responseType="token"
                   clientId="303882562045636"
-                  redirectUri="https://to-let-room-on-rent.vercel.app/"
-                  scope="public_profile"
+                  redirectUri={window.location.origin + "/"}
+                  scope="public_profile,email"
                   onSuccess={handleFacebookResponse}
                 >
                   <i className="fa-brands fa-facebook fa-lg" />

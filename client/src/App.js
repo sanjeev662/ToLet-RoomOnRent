@@ -26,7 +26,6 @@ import DetailPage from "./components/profile/DetailPage";
 import Bookedhosting from "./components/profile/bookedhosting/Bookedhosting";
 
 import Error from "./layouts/Error";
-import ComingSoon from "./layouts/ComingSoon";
 
 import Chatpage from "./components/chats/chatpages/Chatpage";
 

@@ -73,7 +73,7 @@ Router.post('/signup/email/verify', [
                                 }
 
                                 // console.log(data);
-                                const authToken = jwt.sign(data, JWT_SECRET)
+                                const authToken = jwt.sign(data, JWT_SECRET, { expiresIn: '7d' })
                                 // console.log(authToken);
 
                                 const msg = `Dear ${req.body.fname + " " + req.body.lname},<br><br>
@@ -133,7 +133,7 @@ Router.post('/signup/email', [
 
 
             const authCode = Math.floor(100000 + Math.random() * 900000);
-            authCodeCheck = authCode;
+            const authCodeCheck = authCode;
 
             const msg = `Thank you for choosing our site to-let. Use the OTP below to verify your account.<br>
             [${authCode}]<br>
@@ -204,7 +204,7 @@ Router.post('/signin', [
                     user: user.id
                 }
             }
-            const authToken = await jwt.sign(paylord, JWT_SECRET)
+            const authToken = jwt.sign(paylord, JWT_SECRET, { expiresIn: '7d' })
 
             await res.json({ success: true, authToken,
                 _id:user._id,
@@ -242,9 +242,6 @@ Router.post('/verifyuser', fetchUser, async (req, res) => {
 })
 
 
-module.exports = Router
-
-
 Router.post('/delete/email', [
     body('email', 'Enter a valid email address').isEmail(),
 ],
@@ -264,7 +261,7 @@ Router.post('/delete/email', [
             const trashCode = await PassValidator.findOneAndDelete({ email: req.body.email })
 
             const authCode = Math.floor(100000 + Math.random() * 900000);
-            authCodeCheck = authCode;
+            const authCodeCheck = authCode;
 
             if (await Mailer(req.body.email, 'Verification Code For *ACCOUNT DELETION*', String('Your verification code is ' + authCode))) {
 
@@ -342,13 +339,13 @@ Router.post('/delete/email/verify', [
 
                         const dateNI = new Date();
                         var ISToffSet = 330; //IST is 5:30; i.e. 60*5+30 = 330 in minutes 
-                        offset = ISToffSet * 60 * 1000;
+                        var offset = ISToffSet * 60 * 1000;
                         var date = new Date(dateNI.getTime() + offset);
 
                         const dnt = date.getDate() + '-' + date.getMonth() + 1 + '-' + date.getFullYear() + ' at ' + date.getHours() + ':' + date.getMinutes();
                         const sub = 'New Login Activity'
 
-                        const msg = `Hi ${user.name},<br><br>Account deleted on${dnt}.<br><br>Regards<br>Authify`
+                        const msg = `Hi ${user.username},<br><br>Account deleted on${dnt}.<br><br>Regards<br>Authify`
 
                         Mailer(req.body.email, sub, msg);
 
@@ -367,3 +364,4 @@ Router.post('/delete/email/verify', [
     }
 )
 
+module.exports = Router;

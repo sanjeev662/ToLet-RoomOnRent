@@ -112,10 +112,12 @@ const Home = () => {
   const [hotels, setHotels] = useState(null);
   const [rooms, setRooms] = useState(null);
   const [flats, setFlats] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [hotelsLoading, setHotelsLoading] = useState(true);
+  const [roomsLoading, setRoomsLoading] = useState(true);
+  const [flatsLoading, setFlatsLoading] = useState(true);
 
   const getHotels = async () => {
-    setIsLoading(true);
+    setHotelsLoading(true);
     try{
     const req = `${url}/places?page=1&size=10&address=${""}&placetype=hotel`;
 
@@ -140,12 +142,13 @@ const Home = () => {
       icon: "error",
       button: "Ok!",
     });
+  } finally {
+    setHotelsLoading(false);
   }
-  setIsLoading(false);
   };
 
   const getRooms = async () => {
-    setIsLoading(true);
+    setRoomsLoading(true);
     try{
     const req = `${url}/places?page=1&size=10&address=${""}&placetype=room`;
 
@@ -170,12 +173,13 @@ const Home = () => {
       icon: "error",
       button: "Ok!",
     });
+  } finally {
+    setRoomsLoading(false);
   }
-  setIsLoading(false);
   };
 
   const getFlats = async () => {
-    setIsLoading(true);
+    setFlatsLoading(true);
     try{
     const req = `${url}/places?page=1&size=10&address=${""}&placetype=flat`;
 
@@ -200,8 +204,9 @@ const Home = () => {
       icon: "error",
       button: "Ok!",
     });
+  } finally {
+    setFlatsLoading(false);
   }
-  setIsLoading(false);
   };
 
   // useEffect(() => {
@@ -225,113 +230,58 @@ const Home = () => {
       <Welcome />
       <SlidingBrands title={"Get Your Own Place"} small={"Your Dream Cities"} />
 
-      {isLoading ? (
-        <div
-          className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-        ) : !rooms ? ( 
-          <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-            <div className="text-center d-grid" style={{gap:"6px"}}>
-              <h1><strong>Error!</strong></h1>
-                <p>
-                  Sorry, Failed to Load !
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : rooms.length === 0 ? (
-        ""
-      ) : (
-        <FeaturedCards images={rooms} type={"Room"} />
-      )}
       <CommonCards
         images={room}
         heading={"Rooms"}
         content={"Get rooms available for you in your area"}
         type={"Room"}
       />
-      <hr className="mb-5 p-2" />
-      {isLoading ? (
+      {roomsLoading ? (
         <div
           className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
         >
           <CircularProgress />
         </div>
-        ) : !hotels ? ( 
-          <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-            <div className="text-center d-grid" style={{gap:"6px"}}>
-              <h1><strong>Error!</strong></h1>
-                <p>
-                  Sorry, Failed to Load !
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : hotels.length === 0 ? (
-        ""
-      ) : (
-        <FeaturedCards images={hotels} type={"Hotel"} />
-      )}
+      ) : rooms && rooms.length > 0 ? (
+        <FeaturedCards images={rooms} type={"Room"} />
+      ) : null}
+      <hr className="mb-5 p-2" />
+
       <CommonCards
         images={hotel}
         heading={"Hotels"}
         content={"Get hotels available for you in your area"}
         type={"Hotel"}
       />
-      <hr className="mb-5 p-2" />
-      {isLoading ? (
+      {hotelsLoading ? (
         <div
           className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
         >
-         <CircularProgress />
+          <CircularProgress />
         </div>
-        ) : !flats ? ( 
-          <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-            <div className="text-center d-grid" style={{gap:"6px"}}>
-              <h1><strong>Error!</strong></h1>
-                <p>
-                  Sorry, Failed to Load !
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : flats.length === 0 ? (
-        ""
-      ) : (
-        <FeaturedCards images={flats} type={"Flat"} />
-      )}
+      ) : hotels && hotels.length > 0 ? (
+        <FeaturedCards images={hotels} type={"Hotel"} />
+      ) : null}
+      <hr className="mb-5 p-2" />
+
       <CommonCards
         images={flat}
         heading={"Flats"}
         content={"Get flats available for you in your area"}
         type={"Flat"}
       />
+      {flatsLoading ? (
+        <div
+          className="circle"
+          style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        >
+          <CircularProgress />
+        </div>
+      ) : flats && flats.length > 0 ? (
+        <FeaturedCards images={flats} type={"Flat"} />
+      ) : null}
     </>
   );
 };

@@ -27,20 +27,17 @@ const TestimonialSlider = () => {
   }, []);
 
   useEffect(() => {
+    if (testimonials.length === 0) return;
     const intervalId = setInterval(() => {
-      setCurrentIndex(
-        (currentIndex) => (currentIndex + 1) % testimonials.length
-      );
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     }, 10000);
-
     return () => clearInterval(intervalId);
   }, [testimonials]);
 
-  // Validate testimonials array and set default value
-  const testimonial =
-    Array.isArray(testimonials) && testimonials[currentIndex]
-      ? testimonials[currentIndex]
-      : {};
+  if (!Array.isArray(testimonials) || testimonials.length === 0) {
+    return <div className="testimonial-slider"><p style={{textAlign:'center', padding:'20px'}}>Loading testimonials...</p></div>;
+  }
+  const testimonial = testimonials[currentIndex] || testimonials[0];
 
   const handlePrevClick = () => {
     setCurrentIndex(
@@ -59,11 +56,11 @@ const TestimonialSlider = () => {
       <Testimonial testimonial={testimonial} />
       <div className="testimonial-controls">
         <button onClick={handlePrevClick} className="testimonial-previous">
-          <img src={require("../../assets/media/images/leftarrow_icon.png")} />
+          <img src={require("../../assets/media/images/leftarrow_icon.png")} alt="Previous" />
         </button>
         {currentIndex + 1}/{testimonials.length}
         <button onClick={handleNextClick} className="testimonial-next">
-          <img src={require("../../assets/media/images/rightarrow_icon.png")} />
+          <img src={require("../../assets/media/images/rightarrow_icon.png")} alt="Next" />
         </button>
       </div>
     </div>

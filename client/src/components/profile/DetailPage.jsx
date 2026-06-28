@@ -19,32 +19,38 @@ export default function PlacePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!id) {
-      return;
-    }
-    try {
-      axios
-        .get(`${url}/places/${id}`, {
+    if (!id) return;
+    const fetchPlace = async () => {
+      try {
+        const response = await axios.get(`${url}/places/${id}`, {
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
-        })
-        .then((response) => {
-          setPlace(response.data);
-          setIsLoading(false);
         });
-    } catch (err) {
-      swal({
-        title: "Try Again!",
-        text: "server is down!",
-        icon: "error",
-        button: "Ok!",
-      });
-    }
+        setPlace(response.data);
+      } catch (err) {
+        swal({
+          title: "Try Again!",
+          text: "server is down!",
+          icon: "error",
+          button: "Ok!",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPlace();
   }, [id]);
 
-  if (!place) return "";
+  if (isLoading) {
+    return (
+      <div className="circle" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <CircularProgress />
+      </div>
+    );
+  }
+  if (!place) return null;
 
   const accessChat = async (guestuserId) => {
     try {
@@ -78,18 +84,7 @@ export default function PlacePage() {
   return (
     // <div className="mt-4 bg-gray-100 -mx-8 px-8 pt-8 section">
     <div className="p-8 mx-8 relative section">
-      {isLoading ? (
-        <div
-          className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-      ) : place.length === 0 ? (
+      {!place || Object.keys(place).length === 0 ? (
         <>
           <div className="container mt-5">
             <div className="row justify-content-center">
@@ -116,7 +111,7 @@ export default function PlacePage() {
             <h1 className="text-3xl">{place.title}</h1>
             <div>
               <Link
-                to={`/${place.placetype.toLowerCase()}`}
+                to={`/${(place.placetype || "").toLowerCase()}`}
                 className="bg-primary text-white px-4 py-2 rounded"
               >
                 Back to Listing

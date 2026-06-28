@@ -20,7 +20,7 @@ export function UserContextProvider({ children }) {
   const [selectedChat, setSelectedChat] = useState();
   const [searchResult, setSearchResult] = useState([]);
   const [notification, setNotification] = useState([]);
-  const [chats, setChats] = useState();
+  const [chats, setChats] = useState([]);
 
   const [loggedUser, setLoggedUser] = useState();
 
@@ -65,17 +65,24 @@ export function UserContextProvider({ children }) {
     }
   };
 
-    const setDatas = async () => {
-    const userInfo = await JSON.parse(localStorage.getItem("userInfo"));
-    console.log(userInfo);
-    setUser(userInfo);
-    setLoggedUser(userInfo);
-    // history("/");
+  const setDatas = () => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+      setUser(userInfo);
+      setLoggedUser(userInfo);
+      setUsername(
+        userInfo.username ||
+        (userInfo.data
+          ? String(userInfo.data.firstName + " " + userInfo.data.lastName)
+          : "")
+      );
+      setIslogin(true);
+    }
   };
 
   useEffect(() => {
     setDatas();
-  }, [history]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <UserContext.Provider

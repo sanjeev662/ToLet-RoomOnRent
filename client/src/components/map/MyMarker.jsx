@@ -48,7 +48,7 @@ const MyMarker = ({ text, tooltip, $hover, price, placetype, isbooked }) => {
               </p>
               <p className="card-text" style={{ margin: "3px 0px 5px 0px" }}>
                 Price:{placetype === "Hotel" ? price : price * 30}&nbsp;
-                {placetype === "Hotel" ? "per night" : "per month"};
+                {placetype === "Hotel" ? "per night" : "per month"}
               </p>
               {/* <Link to={`/detail/${text}`} className="btn btn-primary" style={{padding:"2px"}}>
               View Details

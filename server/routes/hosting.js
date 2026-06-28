@@ -1,6 +1,7 @@
 const express = require("express");
 const moment = require("moment-timezone");
 const multer = require("multer");
+const fs = require('fs');
 const User = require("../models/User.js");
 const Place = require("../models/Place.js");
 const Booking = require("../models/Booking.js");
@@ -33,6 +34,7 @@ Router.post(
           resource_type: "image",
           folder: "to-let-images",
         });
+        fs.unlink(file.path, (err) => { if (err) console.log('temp file cleanup error:', err); });
 
         uploadedFiles.push(result.secure_url);
       }
@@ -93,19 +95,32 @@ Router.post("/upload", fetchUser, async (req, res) => {
   }
 });
 
-Router.delete("/deleteplace/:id", async (req, res) => {
+Router.delete("/deleteplace/:id", fetchUser, async (req, res) => {
   try {
     const placeId = req.params.id;
     const place = await Place.findById(placeId);
 
     if (!place) {
-      return res.status(404).json({ message: "place not found" });
+      return res.status(404).json({ message: "Place not found" });
+    }
+    if (place.owner.toString() !== req.userId.toString()) {
+      return res.status(403).json({ message: "Not authorized to delete this place" });
     }
 
     // Delete photos from Cloudinary
     const imagePaths = place.photos;
     for (const imagePath of imagePaths) {
-      await cloudinary.uploader.destroy(imagePath);
+      try {
+        const urlParts = imagePath.split('/');
+        const uploadIndex = urlParts.indexOf('upload');
+        if (uploadIndex !== -1) {
+          const publicIdWithExt = urlParts.slice(uploadIndex + 2).join('/');
+          const publicId = publicIdWithExt.replace(/\.[^/.]+$/, '');
+          await cloudinary.uploader.destroy(publicId);
+        }
+      } catch (e) {
+        console.log('Cloudinary delete error:', e.message);
+      }
     }
 
     // Delete the place from the database
@@ -143,6 +158,9 @@ Router.put("/update", fetchUser, async (req, res) => {
 
     if (!place) {
       return res.status(404).json({ message: "place not found" });
+    }
+    if (place.owner.toString() !== user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized to update this place" });
     }
 
     (place.id = id),
@@ -207,7 +225,7 @@ Router.delete("/cancelbookedhosting/:id", fetchUser, async (req, res) => {
       return res.status(404).json({ message: "bookedhosting not found" });
     }
 
-    const placeDoc = await Place.findOne({ place: bookings.place });
+    const placeDoc = await Place.findOne({ _id: bookings.place });
 
     if (!placeDoc) {
       return res.status(404).json({ error: "Place not found." });

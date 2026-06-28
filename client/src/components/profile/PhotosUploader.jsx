@@ -7,29 +7,20 @@ import swal from "sweetalert";
 export default function PhotosUploader({addedPhotos,onChange}) {
   const [photoLink,setPhotoLink] = useState('');
 
-  function uploadPhoto(ev) {
-    try{
-    const files = ev.target.files;
-    const data = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      data.append('photos', files[i]);
-    }
-    axios.post(`${url}/hosting//upload-by-file`, data, {
-      headers: {'Content-type':'multipart/form-data'}
-    }).then(response => {
-      const {data:filenames} = response;
-      onChange(prev => {
-        return [...prev, ...filenames];
+  async function uploadPhoto(ev) {
+    try {
+      const files = ev.target.files;
+      const data = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        data.append('photos', files[i]);
+      }
+      const response = await axios.post(`${url}/hosting/upload-by-file`, data, {
+        headers: { 'Content-type': 'multipart/form-data' },
       });
-    })
-  } catch (err) {
-    swal({
-      title: "Try Again!",
-      text: "server is down!",
-      icon: "error",
-      button: "Ok!",
-    });
-  }
+      onChange(prev => [...prev, ...response.data]);
+    } catch (err) {
+      swal({ title: "Upload Failed!", text: "Could not upload photo. Please try again.", icon: "error", button: "Ok!" });
+    }
   }
   function removePhoto(ev,filename) {
     ev.preventDefault();

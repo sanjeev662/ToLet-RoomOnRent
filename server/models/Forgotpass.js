@@ -7,7 +7,7 @@ const ForgotSchema = new mongoose.Schema({
         required : true
     },
     authcode : {
-        type : Number,
+        type : String,
         required : true
     },
 

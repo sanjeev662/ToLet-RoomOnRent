@@ -36,20 +36,12 @@ function Room() {
     setFilterDatas(filter);
   };
 
-  const handleReset = async (e) => {
+  const handleReset = (e) => {
     e.preventDefault();
-
-    setFilter({
-      address: "",
-      placetype: "Room",
-    });
-    setFilterData({
-      address: "",
-      placetype: "Room",
-    });
-    // setSort("new");
-
-    await getData();
+    const cleared = { address: "", placetype: "Room" };
+    setFilter(cleared);
+    setFilterData(cleared);
+    setFilterDatas(cleared);
   };
 
   const removeFilter = async (f) => {
@@ -113,9 +105,10 @@ function Room() {
         setTotalCount(responseData.Pagination.count);
       }
 
-      setFilterData({
+      setFilterData(prev => ({
+        ...prev,
         address: "",
-      });
+      }));
     } catch (err) {
       swal({
         title: "Try Again!",
@@ -199,9 +192,7 @@ function Room() {
                     />
                     <datalist id="data">
                       {list.map((op, i) => (
-                        <option>
-                          {op.name} , {op.state}
-                        </option>
+                        <option key={i} value={`${op.name} , ${op.state}`} />
                       ))}
                     </datalist>
                   </div>
@@ -304,7 +295,7 @@ function Room() {
               </div>
             ) : (
               rooms.map((room) => (
-                <div className="shadow-0 border rounded-3 card mx-4 mt-4 mb-2">
+                <div key={room._id} className="shadow-0 border rounded-3 card mx-4 mt-4 mb-2">
                   <div className="card-body px-4 py-4">
                     <div className="row">
                       <div className="col-md-12 col-lg-3 mb-4 mb-lg-0">
@@ -313,7 +304,7 @@ function Room() {
                             src={
                               room.photos && room.photos.length > 0
                                 ? room.photos[0]
-                                : require("./hotel1.jpg")
+                                : require("../../assets/media/images/room/room1.jpg")
                             }
                             fluid
                             className="w-100"

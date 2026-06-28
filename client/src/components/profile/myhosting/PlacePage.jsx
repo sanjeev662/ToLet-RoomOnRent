@@ -18,21 +18,18 @@ export default function PlacePage() {
   const navigate = useNavigate();
 
   const getuserPlace = async (id) => {
+    if (!id) {
+      setIsLoading(false);
+      return;
+    }
     try {
-      if (!id) {
-        return;
-      }
-      axios
-        .get(`${url}/places/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        })
-        .then((response) => {
-          setPlace(response.data);
-          setIsLoading(false);
-        });
+      const response = await axios.get(`${url}/places/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      setPlace(response.data);
     } catch (err) {
       swal({
         title: "Try Again!",
@@ -40,6 +37,8 @@ export default function PlacePage() {
         icon: "error",
         button: "Ok!",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -95,23 +94,19 @@ export default function PlacePage() {
     }
   }, [id]);
 
-  if (!place) return "";
+  if (isLoading) {
+    return (
+      <div className="circle" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <CircularProgress />
+      </div>
+    );
+  }
+  if (!place) return null;
 
   return (
     // <div className="mt-4 bg-gray-100 -mx-8 px-8 pt-8 section">
     <div className="p-8 mx-8 relative section">
-      {isLoading ? (
-        <div
-          className="circle"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-      ) : place.length === 0 ? (
+      {!place || Object.keys(place).length === 0 ? (
         <>
           <div className="container mt-5">
             <div className="row justify-content-center">
