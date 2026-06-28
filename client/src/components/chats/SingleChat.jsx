@@ -17,7 +17,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/UserContext.jsx";
 import {url} from "../../utils/Constants";
 
-const ENDPOINT = "https://tolet-roomonrent-server.onrender.com";
+const ENDPOINT = process.env.REACT_APP_API_URL || "https://tolet-roomonrent-server.onrender.com";
 let selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {

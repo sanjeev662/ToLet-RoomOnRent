@@ -24,6 +24,7 @@ export default function BookingPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchBooking = async () => {
     if (!islogin) {
       swal({
         title: "Login Required!",
@@ -60,6 +61,8 @@ export default function BookingPage() {
         setIsLoading(false);
       }
     }
+    };
+    fetchBooking();
   }, [id]);
 
   const accessChat = async (guestuserId) => {

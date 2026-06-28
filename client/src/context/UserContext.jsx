@@ -71,9 +71,10 @@ export function UserContextProvider({ children }) {
       setUser(userInfo);
       setLoggedUser(userInfo);
       setUsername(
-        userInfo.data
+        userInfo.username ||
+        (userInfo.data
           ? String(userInfo.data.firstName + " " + userInfo.data.lastName)
-          : ""
+          : "")
       );
       setIslogin(true);
     }

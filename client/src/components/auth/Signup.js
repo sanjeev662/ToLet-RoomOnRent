@@ -1,3 +1,4 @@
+/* global google */
 import React, { useState, useEffect,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
