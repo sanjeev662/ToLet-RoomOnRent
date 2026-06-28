@@ -18,7 +18,6 @@ import { UserContext } from "../../context/UserContext.jsx";
 import {url} from "../../utils/Constants";
 
 const ENDPOINT = process.env.REACT_APP_API_URL || "https://tolet-roomonrent-server.onrender.com";
-let selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
@@ -30,14 +29,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
   const socketRef = useRef(null);
+  const selectedChatRef = useRef(null);
 
   const {
     selectedChat,
     setSelectedChat,
     user,
-    notification,
     setNotification,
   } = useContext(UserContext);
+
+  // keep ref in sync so socket handler always sees current selectedChat
+  useEffect(() => {
+    selectedChatRef.current = selectedChat;
+  }, [selectedChat]);
 
   const defaultOptions = {
     loop: true,
@@ -56,10 +60,25 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     socketRef.current.on("connected", () => setSocketConnected(true));
     socketRef.current.on("typing", () => setIsTyping(true));
     socketRef.current.on("stop typing", () => setIsTyping(false));
+    socketRef.current.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatRef.current ||
+        selectedChatRef.current._id !== newMessageRecieved.chat._id
+      ) {
+        setNotification((prev) =>
+          prev.find((n) => n._id === newMessageRecieved._id)
+            ? prev
+            : [newMessageRecieved, ...prev]
+        );
+        setFetchAgain((prev) => !prev);
+      } else {
+        setMessages((prev) => [...prev, newMessageRecieved]);
+      }
+    });
     return () => {
       socketRef.current.disconnect();
     };
-  }, [user]);
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -130,7 +149,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           `${url}/chats/message`,
           {
             content: newMessage,
-            chatId: selectedChat,
+            chatId: selectedChat._id,
           },
           config
         );
@@ -151,31 +170,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     fetchMessages();
-    selectedChatCompare = selectedChat;
   }, [selectedChat]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (!socketRef.current) return;
-    const handler = (newMessageRecieved) => {
-      if (
-        !selectedChatCompare ||
-        selectedChatCompare._id !== newMessageRecieved.chat._id
-      ) {
-        setNotification((prev) =>
-          prev.find((n) => n._id === newMessageRecieved._id)
-            ? prev
-            : [newMessageRecieved, ...prev]
-        );
-        setFetchAgain((prev) => !prev);
-      } else {
-        setMessages((prev) => [...prev, newMessageRecieved]);
-      }
-    };
-    socketRef.current.on("message recieved", handler);
-    return () => {
-      socketRef.current.off("message recieved", handler);
-    };
-  }, [notification]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
