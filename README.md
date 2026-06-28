@@ -1,53 +1,156 @@
-# ToLet-RoomOnRent (Beta Version)
+# ToLet — Room on Rent
 
-## Project Overview
-Our project simplifies property rentals by providing an intuitive platform with filter-based and map-based search, real-time chat for direct owner communication, and efficient booking and hosting features. **It eliminates the hassle of door-to-door room searches**, streamlining property discovery and rental decision-making
+A full-stack property rental platform that lets users search, book, and communicate about rooms, flats, and hotels — without the hassle of door-to-door searching.
+
+---
+
+## Tech Stack
+
+**Frontend**
+- React 18 (Create React App)
+- Chakra UI · Bootstrap · Swiper.js
+- Socket.io Client · Axios
+- Google Maps API · Google Sign-In (GSI) · React Simple OAuth2 Login
+
+**Backend**
+- Node.js · Express 4
+- MongoDB · Mongoose 8
+- Socket.io 4 (real-time chat)
+- JWT (jsonwebtoken) · bcryptjs
+- Cloudinary (image uploads) · Multer
+- Nodemailer (OTP emails)
+
+---
 
 ## Features
 
-### User-Friendly Interface
-- Designed an intuitive and user-friendly interface, making it easy for users to navigate and find their ideal rental properties.
+- **User-Friendly Interface** — Intuitive design that makes it easy to navigate and find ideal rental properties.
+- **Search & Booking** — Search, book, and save properties with type and city filters, plus pagination.
+- **Real-Time Communication** — Socket.io powered chat (1-on-1 and group) with typing indicators for seamless owner–user communication.
+- **Geolocation Services** — Google Maps integration to view precise room locations and let owners pin their properties on the map.
+- **Filtering Options** — Filter listings by property type (Room, Flat, Hotel) and city.
+- **Variety of Listings** — Rooms, flats, and hotels catering to different budgets and preferences.
+- **Direct Owner Interaction** — Users connect directly with property owners to discuss availability and terms.
+- **Hosting** — List, edit, and delete your own properties with photo uploads via Cloudinary.
+- **Wishlist** — Save properties and revisit them later.
 
-### Search and Booking
-- Implemented a robust search and booking system, allowing users to search, book, and save properties effortlessly.
+---
 
-### Real-Time Communication
-- Integrated real-time chat functionality for seamless communication between users and property owners, enhancing decision-making efficiency.
+## Project Structure
 
-### Geolocation Services
-- Utilized Google Maps integration to provide precise room locations for users, allowing property owners to pinpoint their offerings.
+```
+ToLet-RoomOnRent/
+├── client/                 # React frontend (CRA)
+│   └── src/
+│       ├── components/
+│       │   ├── auth/       # Login, Signup, ForgotPass
+│       │   ├── chats/      # Chat UI, SingleChat, MyChats, ScrollableChat
+│       │   ├── filter/     # Room, Flat, Hotel filter pages
+│       │   ├── home/       # Home, Welcome, FeaturedCards, CommonCards, SlidingBrands
+│       │   ├── map/        # Google Maps integration
+│       │   ├── profile/    # Booking, Hosting, Saved, PhotoUploader
+│       │   └── testimonial/
+│       ├── context/        # UserContext (auth + chat state)
+│       └── utils/          # Constants (API URL)
+└── server/                 # Express backend
+    ├── models/             # User, Place, Booking, ChatModel, MessageModel, Forgotpass
+    ├── routes/             # auth, oauth, hosting, booking, chats, places, forgotpass, testimonial
+    └── middleware/         # fetchUserFromToken (JWT auth)
+```
 
-### Filtering Options
-- Developed advanced filtering options, enabling users to refine their search results based on preferences such as room location and price range.
+---
 
-### Variety of Listings
-- Included a diverse range of rental listings, from cozy rooms to spacious flats and luxurious hotels, to cater to different user preferences.
+## Getting Started
 
-### Direct Owner Interaction
-- Enabled users to connect directly with property owners, facilitating discussions about availability and terms, fostering trust and transparency.
+### Prerequisites
+- Node.js ≥ 18
+- MongoDB Atlas account (or local MongoDB)
+- Cloudinary account
+- Gmail account with an [App Password](https://myaccount.google.com/apppasswords) enabled
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/sanjeev662/ToLet-RoomOnRent.git
+cd ToLet-RoomOnRent
+```
+
+### 2. Configure the server
+
+Create `server/.env`:
+
+```env
+PORT=5001
+mongoURI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+
+CLOUDNAME=your_cloudinary_cloud_name
+CLOUDAPIKEY=your_cloudinary_api_key
+CLOUDINARYSECRET=your_cloudinary_api_secret
+
+EMAIL=your_gmail_address
+EMAIL_PASS2=your_gmail_app_password
+
+NODE_ENV=development
+```
+
+### 3. Configure the client
+
+Create `client/.env`:
+
+```env
+REACT_APP_API_URL=http://localhost:5001
+REACT_APP_GOOGLE_MAPS_KEY=your_google_maps_api_key
+```
+
+### 4. Install dependencies & run
+
+```bash
+# Backend
+cd server
+npm install
+npm start
+
+# Frontend (new terminal)
+cd client
+npm install
+npm start
+```
+
+The app will open at `http://localhost:3000`.
+
+---
 
 ## Skills Demonstrated
 
-- **UI/UX Design**: Designed an intuitive and user-friendly interface.
-- **Backend Development**: Implemented a robust search and booking system.
-- **Real-Time Chat Integration**: Integrated real-time chat functionality.
-- **Geolocation Services**: Utilized Google Maps API for precise location data.
-- **Data Filtering**: Developed advanced filtering options for property search.
-- **Database Management**: Managed a database of diverse rental listings.
-- **User-Owner Interaction**: Facilitated direct communication between users and owners.
-- **Project Management**: Successfully coordinated and executed the project.
-- **Problem Solving**: Addressed the door-to-door room search problem effectively.
-- **Customer Experience Enhancement**: Improved the rental search experience for users.
+- **UI/UX Design** — Intuitive and user-friendly interface design.
+- **Backend Development** — Robust search, booking, and hosting system with REST APIs.
+- **Real-Time Chat Integration** — Socket.io for live messaging and typing indicators.
+- **Geolocation Services** — Google Maps API for precise property location data.
+- **Data Filtering** — Advanced filtering by property type and city.
+- **Database Management** — MongoDB with Mongoose for diverse rental listings.
+- **Authentication** — JWT, bcrypt, email OTP, Google and Facebook OAuth.
+- **Cloud Storage** — Cloudinary for property image uploads.
+- **Problem Solving** — Addressed the door-to-door room search problem effectively.
+
+---
 
 ## User Benefits
 
-- **Time-Saving**: Users can find rental properties more efficiently.
-- **Convenience**: Property owners can easily list their properties.
-- **Transparency**: Real-time chat promotes open communication.
-- **Precision**: Google Maps integration provides accurate location data.
-- **Choice**: Users have a wide variety of rental options to explore.
+- **Time-Saving** — Find rental properties faster without visiting in person.
+- **Convenience** — Property owners can list and manage their properties with ease.
+- **Transparency** — Real-time chat promotes open communication between users and owners.
+- **Precision** — Google Maps integration provides accurate property location data.
+- **Choice** — Wide variety of rental options — rooms, flats, and hotels.
+
+---
 
 ## YouTube Explanation Video
-For a detailed explanation of the project, please watch the [YouTube Explanation Video](https://youtu.be/0Esg-oJse-c).
 
+For a detailed walkthrough of the project, watch the [YouTube Explanation Video](https://youtu.be/0Esg-oJse-c).
 
+---
+
+## Author
+
+**Sanjeev Singh** — [GitHub](https://github.com/sanjeev662)
