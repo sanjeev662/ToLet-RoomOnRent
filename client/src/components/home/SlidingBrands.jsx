@@ -1,10 +1,8 @@
 import React, { useRef, useEffect,useState } from "react";
 import "../../assets/styles/slidingbrands.css";
 import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 
 const SlidingBrands = ({ small, title }) => {
   const brands = [
@@ -54,10 +52,7 @@ const SlidingBrands = ({ small, title }) => {
               disableOnInteraction: true,
             }}
             loop={true}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[Autoplay, Pagination]}
+            modules={[Autoplay]}
             speed={2000}
           >
             {brands.map((ele, i) => {
