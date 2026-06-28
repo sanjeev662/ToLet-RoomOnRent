@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { url } from "../utils/Constants";
 import swal from "sweetalert";
 
@@ -28,8 +27,6 @@ export function UserContextProvider({ children }) {
     address: "",
     placetype: "",
   });
-
-  const history = useNavigate();
 
   //function to verify user
   const checkToken = async () => {

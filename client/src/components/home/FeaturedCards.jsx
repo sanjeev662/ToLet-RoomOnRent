@@ -1,6 +1,5 @@
-import React, { useRef, useEffect,useState } from "react";
+import React, { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
-import { MdArrowRightAlt, MdImageSearch } from "react-icons/md";
 import "../../assets/styles/featuredcards.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";

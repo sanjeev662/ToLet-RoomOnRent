@@ -23,11 +23,10 @@ export default function PlacesFormPage() {
   const [maxGuests, setMaxGuests] = useState(1);
   const [price, setPrice] = useState(100);
   const [redirect, setRedirect] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
   const {
     islogin,
-    setIslogin,
     setLatitude,
     latitude,
     longitude,
@@ -75,7 +74,7 @@ export default function PlacesFormPage() {
       }
     };
     fetchPlace();
-  }, [id, islogin]);
+  }, [id, islogin]); // eslint-disable-line react-hooks/exhaustive-deps
   function inputHeader(text) {
     return <h2 className="text-2xl mt-4">{text}</h2>;
   }

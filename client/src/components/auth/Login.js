@@ -330,7 +330,7 @@ const Login = (props) => {
     } else {
       window.onGoogleLibraryLoad = initGAuth;
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   //for password to show
   const [showPassword, setShowPassword] = useState(false);

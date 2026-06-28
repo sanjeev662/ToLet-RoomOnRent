@@ -14,7 +14,7 @@ export default function PlacePage() {
   const [place, setPlace] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
-  const { islogin, setIslogin } = useContext(UserContext);
+  const { islogin } = useContext(UserContext);
   const navigate = useNavigate();
 
   const getuserPlace = async (id) => {
@@ -92,7 +92,7 @@ export default function PlacePage() {
     } else {
       getuserPlace(id);
     }
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (isLoading) {
     return (

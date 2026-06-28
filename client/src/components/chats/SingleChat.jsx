@@ -32,16 +32,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const socketRef = useRef(null);
 
   const {
-    islogin,
-    setIslogin,
     selectedChat,
     setSelectedChat,
     user,
-    setUser,
     notification,
     setNotification,
-    chats,
-    setChats,
   } = useContext(UserContext);
 
   const defaultOptions = {
@@ -157,7 +152,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     fetchMessages();
     selectedChatCompare = selectedChat;
-  }, [selectedChat]);
+  }, [selectedChat]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!socketRef.current) return;
@@ -180,7 +175,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     return () => {
       socketRef.current.off("message recieved", handler);
     };
-  }, [notification]);
+  }, [notification]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

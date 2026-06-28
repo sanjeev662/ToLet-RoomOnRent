@@ -1,7 +1,7 @@
 // export default MyMarker;
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const MyMarker = ({ text, tooltip, $hover, price, placetype, isbooked }) => {
   const [showInfo, setShowInfo] = useState(false);

@@ -13,7 +13,7 @@ function Hotel() {
   const [hotels, setHotels] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const authToken = localStorage.getItem("token");
-  const {islogin,setIslogin,setFilterData,filterData} = useContext(UserContext);
+  const {islogin,setFilterData,filterData} = useContext(UserContext);
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState({
@@ -42,11 +42,6 @@ function Hotel() {
     setFilter(cleared);
     setFilterData(cleared);
     setFilterDatas(cleared);
-  };
-
-  const removeFilter = async (f) => {
-    setFilterData({ ...filterData, [f]: "" });
-    setFilter({ ...filter, [f]: "" });
   };
 
   //for pagination
@@ -117,9 +112,9 @@ function Hotel() {
   setIsLoading(false);
   };
 
-  useEffect(() => {  
+  useEffect(() => {
     getData();
-  }, [currentPage, pageSize,filterDatas,sort]);
+  }, [currentPage, pageSize,filterDatas,sort]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addtosaved = async (id) => {
     if (!islogin) {
@@ -275,8 +270,8 @@ function Hotel() {
                         Sorry, there is no data available to display at the
                         moment.
                       </p>
-                      <a href="#"
-                        onClick={handleReset} className="btn btn-primary">
+                      <a href="#!"
+                        onClick={(e) => { e.preventDefault(); handleReset(e); }} className="btn btn-primary">
                         Remove All Filters
                       </a>
                     </div>

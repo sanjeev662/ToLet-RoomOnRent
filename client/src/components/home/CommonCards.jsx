@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../assets/styles/commoncards.css";
-import { AiOutlineRight } from "react-icons/ai";
-
 import { UserContext } from "../../context/UserContext.jsx";
 
 const CommonCards = ({ images, heading, content, type, link }) => {
 
-  const { setFilterData, filterData } = useContext(UserContext);
+  const { setFilterData } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleUpdatePlacetypeAddress = (link, addresses, placetypes) => {

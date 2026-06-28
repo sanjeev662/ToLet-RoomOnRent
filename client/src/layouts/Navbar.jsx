@@ -1,27 +1,22 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/navbar.css";
 import {
-  AiOutlineSearch,
   AiOutlineHome,
-  AiOutlineUser,
-  AiOutlineMenu,
 } from "react-icons/ai";
 import { BsChatLeftText } from "react-icons/bs";
 
-import { RiHotelLine, RiMapPinLine, RiChat1Line } from "react-icons/ri";
+import { RiHotelLine, RiMapPinLine } from "react-icons/ri";
 import { MdOutlineMeetingRoom, MdOutlineLocalHotel } from "react-icons/md";
 import { BiLogIn, BiMenu } from "react-icons/bi";
 import Avatar from "@mui/material/Avatar";
 import { NavLink } from "react-router-dom";
-import { url } from "../utils/Constants";
-import swal from "sweetalert";
 
 import { UserContext } from "../context/UserContext.jsx";
 
 const Navbar = () => {
   const history = useNavigate();
-  const { islogin, setIslogin,user, setUser,username, setUsername ,checkToken } =
+  const { islogin, setIslogin, username, checkToken } =
     useContext(UserContext);
   
 
@@ -168,6 +163,7 @@ const Navbar = () => {
                       <img
                         src={require("../assets/media/images/icon-logout.png")}
                         title="Logout"
+                        alt=""
                       />
                     </a>
                     {/* </div> */}

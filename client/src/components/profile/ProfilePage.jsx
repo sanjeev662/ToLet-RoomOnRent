@@ -1,8 +1,7 @@
-import {useContext, useState,useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {UserContext} from "../../context/UserContext.jsx";
 import swal from "sweetalert";
-import {Link, Navigate, useParams,useNavigate} from "react-router-dom";
-import axios from "axios";
+import {useParams,useNavigate} from "react-router-dom";
 import PlacesPage from "./myhosting/PlacesPage";
 import AccountNav from "./AccountNav";
 import "../../assets/styles/profile.css";
@@ -10,7 +9,6 @@ import "../../assets/styles/profile.css";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const [redirect,setRedirect] = useState(null);
   const { islogin,setIslogin,username} = useContext(UserContext);
 
   let {subpage} = useParams();

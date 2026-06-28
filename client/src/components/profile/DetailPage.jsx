@@ -13,8 +13,7 @@ export default function PlacePage() {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const authToken = localStorage.getItem("token");
-  const { islogin, setIslogin, setSelectedChat, setChats, chats } =
+  const { setSelectedChat } =
     useContext(UserContext);
   const navigate = useNavigate();
 

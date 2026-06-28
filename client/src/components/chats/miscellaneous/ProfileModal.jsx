@@ -1,5 +1,4 @@
 import { ViewIcon } from "@chakra-ui/icons";
-import {url} from "../../../utils/Constants";
 import {
   Modal,
   ModalOverlay,

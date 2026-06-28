@@ -34,16 +34,9 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const toast = useToast();
 
   const {
-    islogin,
-    setIslogin,
     selectedChat,
     setSelectedChat,
     user,
-    setUser,
-    notification,
-    setNotification,
-    chats,
-    setChats,
   } = useContext(UserContext);
 
   const handleSearch = async (query) => {

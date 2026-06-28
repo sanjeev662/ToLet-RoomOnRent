@@ -3,7 +3,6 @@ import { useState } from "react";
 import Chatbox from "../Chatbox";
 import MyChats from "../MyChats";
 import { useNavigate } from "react-router-dom";
-import swal from "sweetalert";
 // import SideDrawer from "../miscellaneous/SideDrawer";
 import { useContext , useEffect } from "react";
 import { UserContext } from "../../../context/UserContext.jsx";
@@ -13,15 +12,7 @@ const Chatpage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
   const {
     islogin,
-    setIslogin,
-    selectedChat,
-    setSelectedChat,
     user,
-    setUser,
-    notification,
-    setNotification,
-    chats,
-    setChats,
   } = useContext(UserContext);
 
   const navigate=useNavigate();
@@ -30,7 +21,7 @@ const Chatpage = () => {
     if (!islogin) {
       navigate("/login");
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ChakraProvider>
